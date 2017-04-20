@@ -1,0 +1,76 @@
+body
+{
+    background: url('../images/bg.png') #092846;
+}
+
+.background-left
+{
+    background: url("../images/backgrounds/empfang.png");
+    width: 423px;
+    height: 503px;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.background-right
+{
+    background: url("../images/backgrounds/hotel.png");
+    width: 434px;
+    height: 472px;
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.form-group
+{
+    margin-bottom: 10px;
+}
+
+.form-group .form-control
+{
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: solid 1px #333;
+    width: calc(100% - 45px);
+    display: block;
+    margin-top: 5px;
+    color: #333;
+}
+
+.window .header
+{
+    background: url("../images/window/login/header.png") no-repeat;
+    width: 300px;
+    height: 33px;
+    display: block;
+    font-family: Ubuntu-Bold, sans-serif;
+    color: #fff;
+    padding-top: 9px;
+    text-align: center;
+    cursor: move;
+}
+
+.window .body
+{
+    background: url("../images/window/login/body.png") repeat-y;
+    width: 300px;
+    height: auto;
+    display: block;
+    padding: 10px 10px 5px 10px;
+    min-height: 20px;
+    margin-top: -9px;
+    clear: both;
+}
+
+.window .footer
+{
+    background: url("../images/window/login/footer.png") no-repeat;
+    width: 300px;
+    height: 10px;
+    display: block;
+    clear: both;
+}

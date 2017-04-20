@@ -1,0 +1,122 @@
+@font-face
+{
+    font-family: Ubuntu;
+    src: local("Ubuntu-Regular"),
+    local("Ubuntu-Regular"),
+    url(../fonts/Ubuntu-Regular.ttf);
+
+}
+
+@font-face
+{
+    font-family: Ubuntu-Bold;
+    src: local("Ubuntu-Bold"),
+    local("Ubuntu-Bold"),
+    url(../fonts/Ubuntu-Bold.ttf);
+}
+
+body
+{
+    font-family: Ubuntu, sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+.button
+{
+    border: solid 1px #000;
+    border-bottom: solid 2px #000;
+    border-radius: 4px;
+    padding: 4px 15px;
+    color: #fff;
+    font-family: Ubuntu-Bold, sans-serif;
+    cursor: pointer;
+}
+
+.button-green
+{
+    background: #00a100;
+    background: -moz-linear-gradient(top, #00a100 50%, #009000 50%);
+    background: -webkit-linear-gradient(top, #00a100 50%, #009000 50%);
+    background: linear-gradient(to bottom, #00a100 50%, #009000 50%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00a100', endColorstr='#009000', GradientType=0);
+}
+
+.button-green:hover
+{
+    background: #0cba00;
+    background: -moz-linear-gradient(top, #0cba00 50%, #08aa00 50%);
+    background: -webkit-linear-gradient(top, #0cba00 50%, #08aa00 50%);
+    background: linear-gradient(to bottom, #0cba00 50%, #08aa00 50%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0cba00', endColorstr='#08aa00', GradientType=0);
+}
+
+.button-blue
+{
+    background: #2d6ea8;
+    background: -moz-linear-gradient(top, #2d6ea8 50%, #235e8e 50%);
+    background: -webkit-linear-gradient(top, #2d6ea8 50%, #235e8e 50%);
+    background: linear-gradient(to bottom, #2d6ea8 50%, #235e8e 50%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2d6ea8', endColorstr='#235e8e', GradientType=0);
+}
+
+.button-blue:hover
+{
+    background: #328ebc;
+    background: -moz-linear-gradient(top, #328ebc 50%, #287aa3 50%);
+    background: -webkit-linear-gradient(top, #328ebc 50%, #287aa3 50%);
+    background: linear-gradient(to bottom, #328ebc 50%, #287aa3 50%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#328ebc', endColorstr='#287aa3', GradientType=0);
+}
+
+.close
+{
+    background: url("../images/icons/close.png");
+    width: 19px;
+    height: 20px;
+    display: inline-block;
+    float: right;
+    position: absolute;
+    right: 30px;
+    top: 7px;
+    cursor: pointer;
+}
+
+.close:hover
+{
+    background: url("../images/icons/close.png") 0 -20px;
+}
+
+.close:active
+{
+    background: url("../images/icons/close.png") 0 -40px;
+    height: 19px;
+}
+
+.alert
+{
+    padding: 10px 10px;
+    border: solid 1px;
+    border-radius: 4px;
+    display: block;
+    width: calc(100% - 45px);
+    margin-bottom: 10px;
+}
+
+.alert-error
+{
+    border-color: indianred;
+    background: pink;
+}
+
+.alert-success
+{
+    border-color: darkgreen;
+    background: lightgreen;
+}
+
+.alert-info
+{
+    border-color: steelblue;
+    background: deepskyblue;
+}
