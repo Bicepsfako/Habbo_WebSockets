@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>NDC-Pixels</title>
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"/>
-    <link href="web-galley/css/reset.css" rel="stylesheet"/>
-    <link href="web-galley/css/global.css" rel="stylesheet"/>
-    <link href="web-galley/css/index.css" rel="stylesheet"/>
+    <link href="web-gallery/css/reset.css" rel="stylesheet"/>
+    <link href="web-gallery/css/global.css" rel="stylesheet"/>
+    <link href="web-gallery/css/index.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="background-right"></div>
@@ -61,6 +61,6 @@
 
 <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="web-galley/js/index.js"></script>
+<script src="web-gallery/js/index.js"></script>
 </body>
 </html>
