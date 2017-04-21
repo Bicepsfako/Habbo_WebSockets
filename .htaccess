@@ -1,0 +1,11 @@
+<ifModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+</ifModule>
+
+ErrorDocument 404 /404.php
+
+RewriteEngine on 
+RewriteRule ^index$ index.php
+RewriteRule ^client$ client.php

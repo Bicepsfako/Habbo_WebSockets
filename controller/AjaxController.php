@@ -57,9 +57,19 @@ class ajaxController
         }
         else
         {
-            $mysqli->query("INSERT INTO users(`username`, `password`, `mail`, `account_created`, `ip_reg`)
-                                  VALUES('" . $username . "', '" . $pass . "', '" . $email . "', '" . time() . "', '" . $_SERVER['REMOTE_ADDR'] . "')") or die($mysqli->error);
-            // TODO: create $_SESSION and login the user
+            session_start();
+            $mysqli->query("INSERT INTO users(`username`, `password`, `mail`, `account_created`, `last_online`, `ip_reg`, `ip_last`) VALUES(
+                                    '" . $username . "',
+                                    '" . $pass . "',
+                                    '" . $email . "',
+                                    '" . time() . "',
+                                    '" . time() . "',
+                                    '" . $_SERVER['REMOTE_ADDR'] . "',
+                                    '" . $_SERVER['REMOTE_ADDR'] . "')") or die($mysqli->error);
+            $userSql = $mysqli->query("SELECT * FROM users WHERE username = '" . $username . "'") or die($mysqli->error);
+            $user = $userSql->fetch_assoc();
+            $mysqli->query("INSERT INTO `user_stats` (id) VALUES ('" . $user['id'] . "')") or die($mysqli->error);
+            $_SESSION['username'] = $username;
             $type = true;
             $message = "Cadastrado com sucesso";
         }
@@ -77,21 +87,30 @@ class ajaxController
         $type = false;
         $username = $functions->FilterText($_POST['username']);
         $pass = $functions->HoloHashMD5($_POST['password']);
+        $remindme = $_POST['remindme'];
+
+        $check = $mysqli->query("SELECT * FROM users WHERE username = '" . $username . "' OR mail = '" . $username . "' AND password = '" . $pass . "'") or die($mysqli->error);
 
         if (!$username || !$pass || !$_POST['password_2'])
         {
             $message = "Preencha todos os campos";
         }
+        else if ($check->num_rows == 0)
+        {
+            $message = "Usuário ou senha incorreto.";
+        }
         else
         {
-            $check = $mysqli->query("SELECT * FROM users WHERE username = '" . $username . "' OR mail = '" . $username . "' AND password = '" . $pass . "'") or die($mysqli->error);
-            if ($check->num_rows > 0)
+            $array = $check->fetch_assoc();
+            $mysqli->query("UPDATE users SET ip_last = '" . $_SERVER['REMOTE_ADDR'] . "', last_online = '" . time() . "' WHERE username = '" . $array['username'] . "'") or die($mysqli->error);
+            session_start();
+            $_SESSION['username'] = $array['username'];
+            if ($remindme == '1')
             {
-                // TODO: Create $_SESSION
-                $type = true;
-                $message = "Login efetuado com sucesso!";
+                setcookie('username', $array['username'], time() + 259200);
             }
-            $message = "Usuário ou senha incorreto.";
+            $type = true;
+            $message = "Login efetuado com sucesso!";
         }
 
         echo json_encode(array(

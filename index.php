@@ -24,6 +24,10 @@
             <label for="login_password">Senha:</label>
             <input type="password" id="login_password" class="form-control" autocomplete="false" />
         </div>
+        <div class="form-group">
+            <input type="checkbox" id="login_remember" />
+            <label for="remember">Lembre-se de mim</label>
+        </div>
         <button class="button button-blue" id="registerBtn">Cadastre-se</button>
         <button class="button button-green" style="float:right;position:absolute;right:33px" id="login_verify">Entrar</button>
     </div>

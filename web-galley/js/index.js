@@ -40,7 +40,8 @@ $(document).ready(function ()
             data: {
                 action: 'LoginUser',
                 username: $('#login_username').val(),
-                password: $('#login_password').val()
+                password: $('#login_password').val(),
+                remindme: $('#login_remember').val()
             },
             success: function (e)
             {
