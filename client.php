@@ -24,40 +24,44 @@ $user = $userQuery->fetch_assoc();
 <head>
     <meta charset="utf-8"/>
     <link href="./web-gallery/css/reset.css" rel="stylesheet"/>
+    <link href="./web-gallery/css/global.css" rel="stylesheet"/>
     <link href="./web-gallery/css/client.css" rel="stylesheet"/>
     <script>
         var _0x463b = ["\x75\x73\x65\x72\x5F\x69\x64"];
         window[_0x463b[0]] =<?php echo $user['id']; ?>;
     </script>
 </head>
-<body>
+<body style="background:url(./web-gallery/images/backgrounds/habbo15/habbo15_background_gradient.png)">
 <div class="gamebox">
+    <div class="background-right"></div>
+    <div class="background-left"></div>
     <div class="mask hidden"></div>
-    <div class="charstats">
-        <span class="healthpoints"></span>
-        <progress id="healthpoints" max="100" value="0"></progress>
+    <div class="alert-window" id="alert-box">
+        <div class="header">Alerta <span class="close" style="right:12px"></span></div>
+        <div class="body">
+            teste
+        </div>
+        <div class="footer"></div>
     </div>
-    <div class="onlineusers-box" id="onlineusers-box">teste</div>
-    <ul class="options">
-        <li><span class="zoom" id="zoom"></span></li>
-        <li><span class="online_users" id="online_users"></span></li>
-        <li><a href="logout.php">Sair</a></li>
-    </ul>
-    <div class="mapbox" id="mapbox"></div>
+    <div class="up_right_options">
+        <span class="help" id="options_help">Ajuda</span>
+        <span class="quit" id="options_quit"></span>
+        <span class="settings" id="options_settings"></span>
+    </div>
     <div class="bottom_bar">
-        <ul class="bottom_bar_content">
-            <li><span class="catalog" id="catalog" title="Catálogo"></span></li>
-            <li><span class="inventory" id="inventory" title="Inventário"></span></li>
-            <!--<li><span class="chatlog" id="chatlog" title="Registro de Conversa"></span></li>-->
-            <li><input type="text" id="charSpeak" class="charspeak"/></li>
-        </ul>
+        <span class="navigator" id="navigator" title="Navegador"></span>
+        <span class="catalog" id="catalog" title="Catálogo"></span>
+        <span class="inventory" id="inventory" title="Inventário"></span>
+        <div class="charspeech">
+            <span class="speech_bubbles"></span>
+            <input type="text" id="charSpeak" class="input_bubble" placeholder="Fale aqui..." />
+        </div>
     </div>
 
-    <ul class="chatlog-box hidden" id="chatlog-box"></ul>
-    <ul class="inventory-box hidden" id="inventory-box"></ul>
-    <ul class="object-box hidden" id="object-box"></ul>
-    <div class="catalog-box" id="catalog-box">
-        <div class="top">Catálogo <span class="close"></span></div>
+    <ul class="inventory-box" id="inventory-box" style="display:none;"></ul>
+    <ul class="object-box" id="object-box" style="display:none;"></ul>
+    <div class="catalog-box" id="catalog-box" style="display:none;">
+        <div class="top">Catálogo <span class="close" style="right:12px"></span></div>
         <div class="body">
             <div class="left-side">
                 <input class="b_search" type="text" id="search" placeholder="Procure aqui" autocomplete="off"/>
