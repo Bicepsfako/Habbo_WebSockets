@@ -33,6 +33,12 @@ $(document).ready(function ()
     // Login
     $('#login_verify').click(function ()
     {
+        LoginAjax();
+    });
+
+    function LoginAjax()
+    {
+        $("#login_alert").hide();
         $.ajax({
             url: 'controller/AjaxController.php',
             type: 'POST',
@@ -41,12 +47,12 @@ $(document).ready(function ()
                 action: 'LoginUser',
                 username: $('#login_username').val(),
                 password: $('#login_password').val(),
-                remindme: $('#login_remember').val()
+                remindme: $('#login_remember').is(':checked')
             },
             success: function (e)
             {
                 $("#login_alert").html(e.message);
-                if (e.type == true)
+                if (e.type === true)
                 {
                     $("#login_alert").addClass("alert-success");
                     window.location.href = "./client";
@@ -58,11 +64,17 @@ $(document).ready(function ()
                 }
             }
         });
-    });
+    }
 
     // Register
     $('#regComplete').click(function ()
     {
+        RegisterAjax();
+    });
+
+    function RegisterAjax()
+    {
+        $("#reg_alert").hide();
         $.ajax({
             url: 'controller/AjaxController.php',
             type: 'POST',
@@ -77,7 +89,7 @@ $(document).ready(function ()
             success: function (e)
             {
                 $("#reg_alert").html(e.message);
-                if (e.type == true)
+                if (e.type === true)
                 {
                     $("#reg_alert").addClass("alert-success");
                     window.location.href = "./client";
@@ -89,5 +101,5 @@ $(document).ready(function ()
                 }
             }
         });
-    });
+    }
 });
