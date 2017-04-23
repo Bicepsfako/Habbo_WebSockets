@@ -13,9 +13,9 @@ class ajaxController
 {
     function __construct()
     {
-        if (isset($_REQUEST['action']) AND method_exists($this, $_REQUEST['action']))
+        if (isset($_POST['action']) AND method_exists($this, $_POST['action']))
         {
-            call_user_func_array(array($this, $_REQUEST['action']), func_get_args());
+            call_user_func_array(array($this, $_POST['action']), func_get_args());
         }
     }
 
@@ -89,9 +89,9 @@ class ajaxController
         $pass = $functions->HoloHashMD5($_POST['password']);
         $remindme = $_POST['remindme'];
 
-        $check = $mysqli->query("SELECT * FROM users WHERE username = '" . $username . "' OR mail = '" . $username . "' AND password = '" . $pass . "'") or die($mysqli->error);
+        $check = $mysqli->query("SELECT * FROM users WHERE username = '" . $username . "' AND password = '" . $pass . "' OR mail = '" . $username . "' AND password = '" . $pass . "'") or die($mysqli->error);
 
-        if (!$username || !$pass || !$_POST['password_2'])
+        if (!$username || !$pass)
         {
             $message = "Preencha todos os campos";
         }
@@ -105,7 +105,7 @@ class ajaxController
             $mysqli->query("UPDATE users SET ip_last = '" . $_SERVER['REMOTE_ADDR'] . "', last_online = '" . time() . "' WHERE username = '" . $array['username'] . "'") or die($mysqli->error);
             session_start();
             $_SESSION['username'] = $array['username'];
-            if ($remindme == '1')
+            if ($remindme == true)
             {
                 setcookie('username', $array['username'], time() + 259200);
             }
