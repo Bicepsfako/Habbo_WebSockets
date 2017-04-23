@@ -40,17 +40,14 @@ $(document).ready(function ()
     websocket.binaryType = "arraybuffer";
     websocket.onopen = function (evt)
     {
-        console.log('Conectado!');
-        websocket.send('connectionId|' + user_id);
-        changeUserStatus('1', user_id);
+        websocket.send('new_connection|' + user_id);
         mapGenerator();
     };
     websocket.onclose = function (evt)
     {
-        changeUserStatus('0', user_id);
         $('body').prepend('<div class="disconnected"><span class="title">Erro</span><p>Alguma coisa de errado não deu certo e você caiu do servidor.</p><p>Reentre ou tente novamente mais tarde.</p><p><a href="client.php">Clique aqui para entrar novamente</a></p></div>');
         $('.mask').show();
-        console.log('Desconectado!');
+        //window.location.href = "./disconnected";
     };
     websocket.onmessage = function (evt)
     {
@@ -99,12 +96,6 @@ $(document).ready(function ()
         websocket.close();
     };
     /* END THE WEB SOCKET CONNECTION */
-
-    /* ENVIA ID DO USUARIO DA DATABASE */
-    function sendUserId()
-    {
-        websocket.send('connectionId|' + user_id);
-    }
 
     /* TERMINO ENVIO DO ID */
 
@@ -371,7 +362,6 @@ $(document).ready(function ()
         })
             .always(function ()
             {
-                sendUserId();
                 //itemSpawner('1', '10_3');
                 //itemSpawner('5', '1_16');
                 //itemSpawner('2', '4_6');

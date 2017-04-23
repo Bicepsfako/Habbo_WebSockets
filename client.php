@@ -36,13 +36,13 @@ $user = $userQuery->fetch_assoc();
     <div class="background-right"></div>
     <div class="background-left"></div>
     <div class="mask hidden"></div>
-    <div class="alert-window" id="alert-box">
+    <!--<div class="alert-window" id="alert-box">
         <div class="header">Alerta <span class="close" style="right:12px"></span></div>
         <div class="body">
             teste
         </div>
         <div class="footer"></div>
-    </div>
+    </div>-->
     <div class="up_right_options">
         <span class="help" id="options_help">Ajuda</span>
         <span class="quit" id="options_quit"></span>
