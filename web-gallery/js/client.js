@@ -438,6 +438,7 @@ $(document).ready(function ()
         if ($("#navigator-box").is(':hidden'))
         {
             $("#navigator-box").show();
+            websocket.send('get_all_rooms|0');
             loadNavigator();
         }
         else
