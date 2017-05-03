@@ -25,7 +25,8 @@ namespace Wandala
         private static void MyHandler(object sender, UnhandledExceptionEventArgs args)
         {
             var e = (Exception)args.ExceptionObject;
-            //Logger.LogCriticalException("SYSTEM CRITICAL EXCEPTION: " + e);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("SYSTEM CRITICAL EXCEPTION: " + e);
             WandalaEnvironment.PerformShutDown();
         }
 

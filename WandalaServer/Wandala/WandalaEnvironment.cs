@@ -86,7 +86,7 @@ namespace Wandala
             }
             switch (key)
             {
-                case "new_connection":
+                case "new_connection": // new_connection|user_id
                     {
                         try
                         {
@@ -103,17 +103,67 @@ namespace Wandala
                         {
                             if (connection.State == ConnectionState.Open)
                                 connection.Close();
-
                         }
                     }
                     break;
-                case "load_room":
+                case "get_all_rooms": // get_all_rooms|0
+                    {
+                        try
+                        {
+                            connection.Open();
+                            command.CommandText = "SELECT `id`,`room_type`,`caption`,`users_now`,`users_max`,`password` FROM rooms ORDER BY users_now DESC LIMIT 20";
+                            using (MySqlDataReader reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    Console.WriteLine(reader.GetString(0));
+                                }
+                                reader.Close();
+                            }
+                        }
+                        catch (IOException e)
+                        {
+                            Console.WriteLine(e);
+                        }
+                        finally
+                        {
+                            if (connection.State == ConnectionState.Open)
+                                connection.Close();
+                        }
+                    }
+                    break;
+                case "get_my_rooms": // get_my_rooms|user_id
+                    {
+                        try
+                        {
+                            connection.Open();
+                            command.CommandText = "SELECT `id`,`room_type`,`caption`,`users_now`,`users_max` FROM rooms WHERE id = '" + value + "' ORDER BY users_now";
+                            using (MySqlDataReader reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    Console.WriteLine(reader.GetString(0));
+                                }
+                                reader.Close();
+                            }
+                        }
+                        catch (IOException e)
+                        {
+                            Console.WriteLine(e);
+                        }
+                        finally
+                        {
+                            if (connection.State == ConnectionState.Open)
+                                connection.Close();
+                        }
+                    }
+                    break;
+                case "load_room": // load_room|room_id
                     {
                         try
                         {
                             connection.Open();
                             command.CommandText = "SELECT * FROM rooms WHERE id = '" + value + "';";
-                            command.Parameters.AddWithValue("VALUE", value);
                             MySqlDataReader reader = command.ExecuteReader();
                             OnlineUsers[context] = int.Parse(value);
                         }
