@@ -93,6 +93,30 @@ body
     height: 19px;
 }
 
+.info
+{
+    background: url("../images/icons/info.png");
+    width: 19px;
+    height: 20px;
+    display: inline-block;
+    float: right;
+    position: absolute;
+    right: 30px;
+    top: 7px;
+    cursor: pointer;
+}
+
+.info:hover
+{
+    background: url("../images/icons/info.png") 0 -20px;
+}
+
+.info:active
+{
+    background: url("../images/icons/info.png") 0 -40px;
+    height: 19px;
+}
+
 .alert
 {
     padding: 10px 10px;

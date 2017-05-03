@@ -60,8 +60,10 @@ $user = $userQuery->fetch_assoc();
 
     <ul class="inventory-box" id="inventory-box" style="display:none;"></ul>
     <ul class="object-box" id="object-box" style="display:none;"></ul>
-    <div class="catalog-box" id="catalog-box" style="display:none;">
-        <div class="top">Catálogo <span class="close" style="right:12px"></span></div>
+
+    <!-- Catálogo -->
+    <div class="catalog-window" id="catalog-box" style="display:none;">
+        <div class="top">Loja <span class="close" style="right:12px"></span></div>
         <div class="body">
             <div class="left-side">
                 <input class="b_search" type="text" id="search" placeholder="Procure aqui" autocomplete="off"/>
@@ -76,6 +78,34 @@ $user = $userQuery->fetch_assoc();
             </div>
         </div>
         <div class="bottom"></div>
+    </div>
+
+    <!-- Navegador -->
+    <div class="navigator-window" id="navigator-box" style="display:block;">
+        <div class="header">Navegador  <span class="info" style="right:36px"></span><span class="close" style="right:12px"></span></div>
+        <ul class="tabs" id="navigator-tabs">
+            <li id="navigator-public" class="active">Público</li>
+            <li id="navigator-all">Todos os quartos</li>
+            <li id="navigator-events">Eventos</li>
+            <li id="navigator-mine">Meu mundo</li>
+        </ul>
+        <div class="body">
+            <div class="filter">
+                <select id="look_for">
+                    <option value="anything" selected>Qualquer coisa</option>
+                    <option value="room_name">Nome do quarto</option>
+                    <option value="owner">Dono</option>
+                    <option value="tag">Etiqueta</option>
+                    <option value="group">Grupo</option>
+                </select>
+                <label>
+                    <input type="text" id="search" placeholder="filtrar quartos por" autocomplete="false" />
+                    <span class="pencil"></span>
+                </label>
+                <span class="update"></span>
+            </div>
+        </div>
+        <div class="footer"></div>
     </div>
 </div>
 

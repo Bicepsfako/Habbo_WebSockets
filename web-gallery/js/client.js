@@ -384,6 +384,7 @@ $(document).ready(function ()
     $("#catalog-box").draggable({containment: '.gamebox', scroll: false, handle: '.top'}); // FAZ O CATÁLOGO ARRASTÁVEL
     $("#alert-box").draggable({containment: '.gamebox', scroll: false, handle: '.header'}); // FAZ A JANELA DE
     // ALERTAARRASTÁVEL
+    $("#navigator-box").draggable({containment: '.gamebox', scroll: false, handle: '.header'}); // FAZ A JANELA DE
 
     // TILES
     $(document).on('mouseover', '.clickable', function ()
@@ -398,12 +399,6 @@ $(document).ready(function ()
         $(this).prev('.tile_hover').remove();
     });
 
-    // INVENTORY
-    $(document).on('click', '#inventory', function ()
-    {
-        $("#inventory-box").toggle();
-    });
-
     // CATALOGUE
     $(document).on('click', '#catalog', function ()
     {
@@ -416,7 +411,6 @@ $(document).ready(function ()
         else
         {
             $("#catalog-box").hide();
-
         }
     });
     $(document).on('click', '#cat_list li', function ()
@@ -437,6 +431,49 @@ $(document).ready(function ()
         $('#cat_list .sub_page[data-parentid="' + pageId + '"]').removeClass('hidden');
     });
 
+    // NAVIGATOR
+    var navigatorTabsLi = $("#navigator-tabs li");
+    $(document).on('click', '#navigator', function ()
+    {
+        if ($("#navigator-box").is(':hidden'))
+        {
+            $("#navigator-box").show();
+            loadNavigator();
+        }
+        else
+        {
+            $("#navigator-box").hide();
+        }
+    });
+    
+    $(document).on('mousedown', '#navigator-public', function ()
+    {
+        navigatorTabsLi.removeClass('active');
+        $(this).addClass('active');
+        // TODO: Load public rooms
+    });
+
+    $(document).on('mousedown', '#navigator-all', function ()
+    {
+        navigatorTabsLi.removeClass('active');
+        $(this).addClass('active');
+        // TODO: Load all rooms
+    });
+
+    $(document).on('mousedown', '#navigator-events', function ()
+    {
+        navigatorTabsLi.removeClass('active');
+        $(this).addClass('active');
+        // TODO: Load events rooms
+});
+
+    $(document).on('mousedown', '#navigator-mine', function ()
+    {
+        navigatorTabsLi.removeClass('active');
+        $(this).addClass('active');
+        // TODO: Load my own rooms
+    });
+
     // ZINDEX AJUSTMENT FOR WINDOWS
     $(document).on('click', '#catalog-box', function ()
     {
@@ -450,6 +487,11 @@ $(document).ready(function ()
     });
 
     // INVENTORY
+    $(document).on('click', '#inventory', function ()
+    {
+        $("#inventory-box").toggle();
+    });
+
     $(document).on('click', '#inventory-box ul.tabs li', function ()
     {
         var tabId = $(this).attr('id').split('_');
@@ -536,5 +578,11 @@ $(document).ready(function ()
                 }
             }
         });
+    }
+
+    // Load Navigator
+    function loadNavigator()
+    {
+        // TODO: Read rooms from database
     }
 });

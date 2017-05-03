@@ -63,7 +63,8 @@ table
 textarea:focus,
 input:focus,
 button:focus,
-button:active
+button:active,
+select:focus
 {
     outline: none;
 }
