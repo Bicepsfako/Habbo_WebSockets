@@ -27,7 +27,7 @@ namespace Wandala
             var e = (Exception)args.ExceptionObject;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("SYSTEM CRITICAL EXCEPTION: " + e);
-            WandalaEnvironment.PerformShutDown();
+            //WandalaEnvironment.PerformShutDown();
         }
 
         private enum CtrlType
