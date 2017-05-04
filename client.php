@@ -28,7 +28,7 @@ $user = $userQuery->fetch_assoc();
     <link href="./web-gallery/css/client.css" rel="stylesheet"/>
     <script>
         var _0x463b = ["\x75\x73\x65\x72\x5F\x69\x64"];
-        window[_0x463b[0]] =<?php echo $user['id']; ?>;
+        window[_0x463b[0]] = <?php echo $user['id']; ?>;
     </script>
 </head>
 <body style="background:url(./web-gallery/images/backgrounds/habbo15/habbo15_background_gradient.png)">
@@ -81,7 +81,7 @@ $user = $userQuery->fetch_assoc();
     </div>
 
     <!-- Navegador -->
-    <div class="navigator-window" id="navigator-box" style="display:block;">
+    <div class="navigator-window" id="navigator-box" style="display:none;">
         <div class="header">Navegador  <span class="info" style="right:36px"></span><span class="close" style="right:12px"></span></div>
         <ul class="tabs" id="navigator-tabs">
             <li id="navigator-public" class="active">Público</li>
@@ -104,6 +104,7 @@ $user = $userQuery->fetch_assoc();
                 </label>
                 <span class="update"></span>
             </div>
+            <ul class="rooms" id="navigator-rooms"></ul>
         </div>
         <div class="footer"></div>
     </div>
@@ -111,8 +112,7 @@ $user = $userQuery->fetch_assoc();
 
 <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="web-galley/js/jquery.preload.min.js"></script>
+<script src="./web-gallery/js/jquery.cookie.js"></script>
 <script src="./web-gallery/js/client.js"></script>
-<script src="./web-gallery/js/ajax.js"></script>
 </body>
 </html>
