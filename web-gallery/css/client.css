@@ -29,9 +29,17 @@ strong
     font-weight: bold
 }
 
+.icon-users-now
+{
+    background: url(../images/icons/users_now.png) no-repeat;
+    width: 9px;
+    height: 10px;
+    display: inline-block;
+}
+
 .background-left
 {
-    background: url("../images/backgrounds/habbo15/habbo15_background_left.png");
+    background: url(../images/backgrounds/habbo15/habbo15_background_left.png);
     width: 358px;
     height: 544px;
     display: block;
@@ -42,7 +50,7 @@ strong
 
 .background-right
 {
-    background: url("../images/backgrounds/habbo15/habbo15_background_right.png");
+    background: url(../images/backgrounds/habbo15/habbo15_background_right.png);
     width: 616px;
     height: 466px;
     display: block;
@@ -839,6 +847,48 @@ ul.object-box li .item_name
 .navigator-window > .body > .filter .update:active
 {
     background: url(../images/icons/update.png) 0 -46px no-repeat;
+}
+
+.navigator-window > .body > ul.rooms
+{
+    margin-top: 10px;
+}
+
+.navigator-window > .body > ul.rooms > li
+{
+    display: block;
+    height: 19px;
+    padding-top: 1px;
+    width: calc(100% - 40px);
+    cursor: pointer;
+}
+
+.navigator-window > .body > ul.rooms > li:nth-child(odd)
+{
+    background: #D5EDFF;
+}
+
+.navigator-window > .body > ul.rooms > li:nth-child(even)
+{
+    background: #FFF;
+}
+
+.navigator-window > .body > ul.rooms > li .users_now
+{
+    display: inline-block;
+    width: 40px;
+    height: 18px;
+    background: #CAC9C0;
+    color: #fff;
+    font-weight: bold;
+    padding: 0 3px;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.navigator-window > .body > ul.rooms > li .icon-users-now
+{
+    margin-left: 4px;
 }
 
 .navigator-window > .footer

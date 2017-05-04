@@ -45,7 +45,12 @@ $(document).ready(function ()
     };
     websocket.onclose = function (evt)
     {
-        $('body').prepend('<div class="disconnected"><span class="title">Erro</span><p>Alguma coisa de errado não deu certo e você caiu do servidor.</p><p>Reentre ou tente novamente mais tarde.</p><p><a href="client.php">Clique aqui para entrar novamente</a></p></div>');
+        $('body').prepend('<div class="disconnected"><span class="title">Desconectado</span><p>Algum' +
+            ' erro ocorreu e você foi desconectado do servidor.</p><p>Reentre ou tente novamente mais tarde.</p><p><a' +
+            ' href="client">Clique' +
+            ' aqui para' +
+            ' entrar' +
+            ' novamente</a></p></div>');
         $('.mask').show();
         //window.location.href = "./disconnected";
     };
@@ -81,6 +86,9 @@ $(document).ready(function ()
                 break;
             case 'fromto':
                 break;
+            case 'load_all_rooms':
+                loadNavigator(evento[1]);
+                break;
             default:
                 //websocket.close();
                 break;
@@ -88,7 +96,13 @@ $(document).ready(function ()
     };
     websocket.onerror = function (evt)
     {
-        $('body').prepend('<div class="disconnected"><span class="title">Erro</span><p>Alguma coisa de errado não deu certo e você caiu do servidor.</p><p>Reentre ou tente novamente mais tarde.</p><p><a href="client.php">Clique aqui para entrar novamente</a></p></div>');
+        $('body').prepend('<div class="disconnected"><span class="title">Desconectado</span><p>Algum' +
+            ' erro ocorreu e você foi desconectado do servidor.</p><p>Reentre ou tente novamente mais tarde.</p><p><a' +
+            ' href="client">Clique' +
+            ' aqui para' +
+            ' entrar' +
+            ' novamente</a></p></div>');
+        $('.mask').show();
     };
 
     window.onbeforeunload = function (e)
@@ -438,15 +452,14 @@ $(document).ready(function ()
         if ($("#navigator-box").is(':hidden'))
         {
             $("#navigator-box").show();
-            websocket.send('get_all_rooms|0');
-            loadNavigator();
+            websocket.send('get_all_rooms');
         }
         else
         {
             $("#navigator-box").hide();
         }
     });
-    
+
     $(document).on('mousedown', '#navigator-public', function ()
     {
         navigatorTabsLi.removeClass('active');
@@ -466,7 +479,7 @@ $(document).ready(function ()
         navigatorTabsLi.removeClass('active');
         $(this).addClass('active');
         // TODO: Load events rooms
-});
+    });
 
     $(document).on('mousedown', '#navigator-mine', function ()
     {
@@ -582,8 +595,21 @@ $(document).ready(function ()
     }
 
     // Load Navigator
-    function loadNavigator()
+    function loadNavigator(data)
     {
-        // TODO: Read rooms from database
+        var dataArray = $.parseJSON(data);
+        for (var key in dataArray)
+        {
+            var color;
+            if (dataArray[key].users_now > 0)
+                color = '#62B061';
+            else
+                color = '#CAC9C0';
+
+            $("#navigator-rooms").append('' +
+                '<li><div class="users_now" style="background:' + color + '"><span class="icon-users-now"' +
+                ' aria-hidden="true"></span> ' + dataArray[key].users_now + '</div> ' + dataArray[key].caption + '</li>' +
+                '');
+        }
     }
 });
