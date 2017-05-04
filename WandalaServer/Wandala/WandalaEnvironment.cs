@@ -8,6 +8,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System.Data;
 using System.Threading;
+using Newtonsoft.Json.Linq;
 
 namespace Wandala
 {
@@ -73,7 +74,6 @@ namespace Wandala
 
         private static void OnReceive(UserContext context)
         {
-            Console.WriteLine("Received data from: " + context.ClientAddress);
             string data = context.DataFrame.ToString();
             string[] words = data.Split('|');
             string key = null, value = null;
@@ -106,20 +106,32 @@ namespace Wandala
                         }
                     }
                     break;
-                case "get_all_rooms": // get_all_rooms|0
+                case "get_all_rooms": // get_all_rooms
                     {
                         try
                         {
                             connection.Open();
-                            command.CommandText = "SELECT `id`,`room_type`,`caption`,`users_now`,`users_max`,`password` FROM rooms ORDER BY users_now DESC LIMIT 20";
+                            command.CommandText = "SELECT `id`,`roomtype`,`caption`,`users_now`,`users_max`,`password` FROM rooms ORDER BY users_now DESC LIMIT 20";
+                            int dictCount = 0;
+                            Dictionary<int, Dictionary<string, string>> results = new Dictionary<int, Dictionary<string, string>>();
                             using (MySqlDataReader reader = command.ExecuteReader())
                             {
                                 while (reader.Read())
                                 {
-                                    Console.WriteLine(reader.GetString(0));
+                                    Dictionary<string, string> dict = new Dictionary<string, string>();
+                                    dict["id"] = reader.GetString(0);
+                                    dict["roomtype"] = reader.GetString(1);
+                                    dict["caption"] = reader.GetString(2);
+                                    dict["users_now"] = reader.GetString(3);
+                                    dict["users_max"] = reader.GetString(4);
+                                    dict["password"] = reader.GetString(5);
+                                    results[dictCount] = dict;
+                                    dictCount += 1;
                                 }
                                 reader.Close();
                             }
+                            string json = JsonConvert.SerializeObject(results);
+                            context.Send("load_all_rooms|" + json);
                         }
                         catch (IOException e)
                         {
