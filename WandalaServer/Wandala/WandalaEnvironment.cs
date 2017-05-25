@@ -1,28 +1,61 @@
-﻿using Alchemy;
-using Alchemy.Classes;
+﻿// System
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Net;
-using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
-using System.Data;
 using System.Threading;
-using Newtonsoft.Json.Linq;
+using System.Text;
+using System.Globalization;
+using System.Windows.Forms;
+using System.Collections.Concurrent;
+
+// MySQL
+using MySql.Data.MySqlClient;
+
+// Wandala
+using Wandala.Core;
+using Wandala.Core.FigureData;
+using Wandala.Core.Language;
+using Wandala.Core.Settings;
+using Wandala.HabboHotel;
+using Wandala.HabboHotel.GameClients;
+using Wandala.HabboHotel.Users;
+using Wandala.HabboHotel.Cache.Type;
+using Wandala.HabboHotel.Users.UserData;
+using Wandala.Utilities;
+using Wandala.Database.Interfaces;
+using Wandala.Database;
+using Wandala.Communication.RCON;
+using Wandala.Communication.ConnectionManager;
+using Wandala.Communication.Packets.Outgoing.Moderation;
+using Wandala.Communication.Encryption.Keys;
+using Wandala.Communication.Encryption;
+
+// Log
+using log4net;
 
 namespace Wandala
 {
     class WandalaEnvironment
     {
-        // Port setup
-        static public int port = 4530;
-        // MySQL Configuration
-        static string connString = "Server=localhost;Database=habbo;Uid=root;Pwd=2296agosto";
-        static MySqlConnection connection = new MySqlConnection(connString);
-        static MySqlCommand command = connection.CreateCommand();
-        // Online users list
-        public static readonly Dictionary<UserContext, int> OnlineUsers = new Dictionary<UserContext, int>(); // user, user_id
-        public static readonly Dictionary<int, UserContext> UsersInRoom = new Dictionary<int, UserContext>(); // room_id, user
+        private static readonly ILog log = LogManager.GetLogger("Wandala.WandalaEnvironment");
+        public const string serverName = "Wandala Server";
+        public const string serverBuild = "0.0.1";
+
+        private static Encoding _defaultEncoding;
+        public static CultureInfo CultureInfo;
+
+        private static Game _game;
+        private static ConfigurationData _configuration;
+        private static ConnectionHandling _connectionManager;
+        private static LanguageManager _languageManager;
+        private static SettingsManager _settingsManager;
+        private static DatabaseManager _manager;
+        private static RCONSocket _rcon;
+        private static FigureDataManager _figureManager;
+        
+        public static bool Event = false;
+        public static DateTime lastEvent;
+        public static DateTime ServerStarted;
 
         private static readonly List<char> Allowedchars = new List<char>(new[]
             {
@@ -30,199 +63,115 @@ namespace Wandala
                 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
                 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '.'
             });
+        private static ConcurrentDictionary<int, Habbo> _usersCached = new ConcurrentDictionary<int, Habbo>();
+        public static string SWFRevision = "";
 
         public static void Initialize()
         {
-            Console.Title = "Wandala Server v0.0.1 | Port: " + port + " | Online: 0 | Rooms Loaded: 0";
+            Console.Title = "Wandala Server v0.0.1 | Online: 0 | Rooms Loaded: 0";
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("                                     __  ");
             Console.WriteLine(" \\            /    /\\      |\\   |   |  \\      /\\      |          /\\");
             Console.WriteLine("  \\    /\\    /    /  \\     | \\  |   |   \\    /  \\     |         /  \\");
             Console.WriteLine("   \\  /  \\  /    /____\\    |  \\ |   |   /   /____\\    |        /____\\");
-            Console.WriteLine("    \\/    \\/    /      \\   |   \\|   |__/   /      \\   |____   /      \\   v0.0.1");
+            Console.WriteLine("    \\/    \\/    /      \\   |   \\|   |__/   /      \\   |____   /      \\");
+            Console.WriteLine("");
+            Console.WriteLine("                            Wandala <Build 0.0.1>");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\nUsing Alchemy Websockets - v2.0.0");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("Initializing server on port ");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(port);
+            Console.Write("Loading server...");
 
-            var aServer = new WebSocketServer(port, IPAddress.Any)
-            {
-                OnReceive = context => OnReceive(context),
-                OnSend = context => OnSend(context),
-                OnConnected = context => OnConnect(context),
-                OnDisconnect = context => OnDisconnect(context),
-                TimeOut = new TimeSpan(0, 0, 60),
-                FlashAccessPolicyEnabled = true
-            };
-
-            aServer.Start();
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("Server initialized!");
-            Console.WriteLine("Waiting for clients...");
-        }
-
-        private static void OnConnect(UserContext context)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Connected: " + context.ClientAddress);
-            Console.ForegroundColor = ConsoleColor.White;
-            OnlineUsers.Add(context, 0);
-            Console.Title = "Wandala Server v0.0.1 | Port: " + port + " | Online: " + OnlineUsers.Count + " | Rooms Loaded: 0";
-        }
-
-        private static void OnReceive(UserContext context)
-        {
-            string data = context.DataFrame.ToString();
-            string[] words = data.Split('|');
-            string key = null, value = null;
-            int count = 0;
-            foreach (string word in words)
-            {
-                if (0 == count) key = word;
-                else if (1 == count) value = word;
-                ++count;
-            }
-            switch (key)
-            {
-                case "new_connection": // new_connection|user_id
-                    {
-                        try
-                        {
-                            connection.Open();
-                            command.CommandText = "UPDATE `users` SET online = '1' WHERE id = '" + value + "';";
-                            command.ExecuteNonQuery();
-                            OnlineUsers[context] = int.Parse(value);
-                        }
-                        catch (IOException e)
-                        {
-                            Console.WriteLine(e);
-                        }
-                        finally
-                        {
-                            if (connection.State == ConnectionState.Open)
-                                connection.Close();
-                        }
-                    }
-                    break;
-                case "get_all_rooms": // get_all_rooms
-                    {
-                        try
-                        {
-                            connection.Open();
-                            command.CommandText = "SELECT `id`,`roomtype`,`caption`,`users_now`,`users_max`,`password` FROM rooms ORDER BY users_now DESC LIMIT 20";
-                            int dictCount = 0;
-                            Dictionary<int, Dictionary<string, string>> results = new Dictionary<int, Dictionary<string, string>>();
-                            using (MySqlDataReader reader = command.ExecuteReader())
-                            {
-                                while (reader.Read())
-                                {
-                                    Dictionary<string, string> dict = new Dictionary<string, string>();
-                                    dict["id"] = reader.GetString(0);
-                                    dict["roomtype"] = reader.GetString(1);
-                                    dict["caption"] = reader.GetString(2);
-                                    dict["users_now"] = reader.GetString(3);
-                                    dict["users_max"] = reader.GetString(4);
-                                    dict["password"] = reader.GetString(5);
-                                    results[dictCount] = dict;
-                                    dictCount += 1;
-                                }
-                                reader.Close();
-                            }
-                            string json = JsonConvert.SerializeObject(results);
-                            context.Send("load_all_rooms|" + json);
-                        }
-                        catch (IOException e)
-                        {
-                            Console.WriteLine(e);
-                        }
-                        finally
-                        {
-                            if (connection.State == ConnectionState.Open)
-                                connection.Close();
-                        }
-                    }
-                    break;
-                case "get_my_rooms": // get_my_rooms|user_id
-                    {
-                        try
-                        {
-                            connection.Open();
-                            command.CommandText = "SELECT `id`,`room_type`,`caption`,`users_now`,`users_max` FROM rooms WHERE id = '" + value + "' ORDER BY users_now";
-                            using (MySqlDataReader reader = command.ExecuteReader())
-                            {
-                                while (reader.Read())
-                                {
-                                    Console.WriteLine(reader.GetString(0));
-                                }
-                                reader.Close();
-                            }
-                        }
-                        catch (IOException e)
-                        {
-                            Console.WriteLine(e);
-                        }
-                        finally
-                        {
-                            if (connection.State == ConnectionState.Open)
-                                connection.Close();
-                        }
-                    }
-                    break;
-                case "load_room": // load_room|room_id
-                    {
-                        try
-                        {
-                            connection.Open();
-                            command.CommandText = "SELECT * FROM rooms WHERE id = '" + value + "';";
-                            MySqlDataReader reader = command.ExecuteReader();
-                            OnlineUsers[context] = int.Parse(value);
-                        }
-                        catch (IOException e)
-                        {
-                            Console.WriteLine(e);
-                        }
-                        finally
-                        {
-                            if (connection.State == ConnectionState.Open)
-                                connection.Close();
-                        }
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private static void OnSend(UserContext context)
-        {
-        }
-
-        private static void OnDisconnect(UserContext context)
-        {
             try
             {
-                int user_id;
-                OnlineUsers.TryGetValue(context, out user_id);
-                connection.Open();
-                command.CommandText = "UPDATE `users` SET online = '0' WHERE id = '" + user_id + "'";
-                command.ExecuteNonQuery();
+                _configuration = new ConfigurationData(Path.Combine(Application.StartupPath, @"config.ini"));
+                var connectionString = new MySqlConnectionStringBuilder
+                {
+                    ConnectionTimeout = 10,
+                    Database = _configuration.data["db.name"],
+                    DefaultCommandTimeout = 30,
+                    Logging = false,
+                    MaximumPoolSize = uint.Parse(_configuration.data["db.pool.maxsize"]),
+                    MinimumPoolSize = uint.Parse(_configuration.data["db.pool.minsize"]),
+                    Password = _configuration.data["db.password"],
+                    Pooling = true,
+                    Port = uint.Parse(_configuration.data["db.port"]),
+                    Server = _configuration.data["db.hostname"],
+                    UserID = _configuration.data["db.username"],
+                    AllowZeroDateTime = true,
+                    ConvertZeroDateTime = true,
+                };
+
+                _manager = new DatabaseManager(connectionString.ToString());
+                if (!_manager.IsConnected())
+                {
+                    log.Error("Failed to connect to the specified MySQL server.");
+                    Console.ReadKey(true);
+                    Environment.Exit(1);
+                    return;
+                }
+                log.Info("Connected to Database!");
+
+                //Reset our statistics first.
+                using (IQueryAdapter dbClient = GetDatabaseManager().GetQueryReactor())
+                {
+                    dbClient.RunQuery("TRUNCATE `catalog_marketplace_data`");
+                    dbClient.RunQuery("UPDATE `rooms` SET `users_now` = '0' WHERE `users_now` > '0';");
+                    dbClient.RunQuery("UPDATE `users` SET `online` = '0' WHERE `online` = '1'");
+                    dbClient.RunQuery("UPDATE `server_status` SET `users_online` = '0', `loaded_rooms` = '0'");
+                }
+
+                //Get the configuration & Game set.
+                _languageManager = new LanguageManager();
+                _languageManager.Init();
+
+                _settingsManager = new SettingsManager();
+                _settingsManager.Init();
+
+                _figureManager = new FigureDataManager();
+                _figureManager.Init();
+
+                //Have our encryption ready.
+                HabboEncryptionV2.Initialize(new RSAKeys());
+
+                //Make sure RCON is connected before we allow clients to connect.
+                _rcon = new RCONSocket(GetConfig().data["rcon.tcp.bindip"], int.Parse(GetConfig().data["rcon.tcp.port"]), GetConfig().data["rcon.tcp.allowedaddr"].Split(Convert.ToChar(";")));
+
+                //Accept connections.
+                _connectionManager = new ConnectionHandling(int.Parse(GetConfig().data["game.tcp.port"]), int.Parse(GetConfig().data["game.tcp.conlimit"]), int.Parse(GetConfig().data["game.tcp.conperip"]), GetConfig().data["game.tcp.enablenagles"].ToLower() == "true");
+                _connectionManager.init();
+
+                _game = new Game();
+                _game.StartGameLoop();
+
+                Console.WriteLine();
+                log.Info("Server ready on port "+ GetConfig().data["game.tcp.port"] + "! Waiting for clients...");
             }
-            catch (IOException e)
+            catch (KeyNotFoundException e)
             {
-                Console.WriteLine(e);
+                log.Error("Please check your configuration file - some values appear to be missing." + e.Message);
+                log.Error("Press any key to shut down ...");
+
+                Console.ReadKey(true);
+                Environment.Exit(1);
+                return;
             }
-            finally
+            catch (InvalidOperationException e)
             {
-                if (connection.State == ConnectionState.Open)
-                    connection.Close();
+                log.Error("Failed to initialize Wandala Server: " + e.Message);
+                log.Error("Press any key to shut down ...");
+                Console.ReadKey(true);
+                Environment.Exit(1);
+                return;
             }
-            OnlineUsers.Remove(context);
-            Console.Title = "Wandala Server v0.0.1 | Port: " + port + " | Online: " + OnlineUsers.Count + " | Rooms Loaded: 0";
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Disconnected: " + context.ClientAddress.ToString());
-            Console.ForegroundColor = ConsoleColor.White;
+            catch (Exception e)
+            {
+                log.Error("Fatal error during startup: " + e);
+                log.Error("Press a key to exit");
+
+                Console.ReadKey();
+                Environment.Exit(1);
+            }
         }
 
         public static void PerformShutDown()
@@ -231,27 +180,233 @@ namespace Wandala
             Console.WriteLine("Server shutting down...");
             Console.Title = "Wandala Server - SHUTTING DOWN!";
 
-            //PlusEnvironment.GetGame().GetClientManager().SendPacket(new BroadcastMessageAlertComposer(GetLanguageManager().TryGetValue("server.shutdown.message")));
-            //GetGame().StopGameLoop();
-            //Thread.Sleep(2500);
-            //GetConnectionManager().Destroy();//Stop listening.
-            //GetGame().GetPacketManager().UnregisterAll();//Unregister the packets.
-            //GetGame().GetPacketManager().WaitForAllToComplete();
-            //GetGame().GetClientManager().CloseAll();//Close all connections
-            //GetGame().GetRoomManager().Dispose();//Stop the game loop.
+            GetGame().GetClientManager().SendPacket(new BroadcastMessageAlertComposer(GetLanguageManager().TryGetValue("server.shutdown.message")));
+            GetGame().StopGameLoop();
+            Thread.Sleep(2500);
+            GetConnectionManager().Destroy();//Stop listening.
+            GetGame().GetPacketManager().UnregisterAll();//Unregister the packets.
+            GetGame().GetPacketManager().WaitForAllToComplete();
+            GetGame().GetClientManager().CloseAll();//Close all connections
+            GetGame().GetRoomManager().Dispose();//Stop the game loop.
 
-            //using (IQueryAdapter dbClient = _manager.GetQueryReactor())
-            //{
-            //    dbClient.RunQuery("TRUNCATE `catalog_marketplace_data`");
-            //    dbClient.RunQuery("UPDATE `users` SET `online` = '0', `auth_ticket` = NULL");
-            //    dbClient.RunQuery("UPDATE `rooms` SET `users_now` = '0' WHERE `users_now` > '0'");
-            //    dbClient.RunQuery("UPDATE `server_status` SET `users_online` = '0', `loaded_rooms` = '0'");
-            //}
+            using (IQueryAdapter dbClient = _manager.GetQueryReactor())
+            {
+                dbClient.RunQuery("TRUNCATE `catalog_marketplace_data`");
+                dbClient.RunQuery("UPDATE `users` SET `online` = '0', `auth_ticket` = NULL");
+                dbClient.RunQuery("UPDATE `rooms` SET `users_now` = '0' WHERE `users_now` > '0'");
+                dbClient.RunQuery("UPDATE `server_status` SET `users_online` = '0', `loaded_rooms` = '0'");
+            }
 
-            //log.Info("Plus Emulator has successfully shutdown.");
+            log.Info("Wandala Server has successfully shutdown.");
 
             Thread.Sleep(1000);
             Environment.Exit(0);
+        }
+
+        public static bool EnumToBool(string Enum)
+        {
+            return (Enum == "1");
+        }
+
+        public static string BoolToEnum(bool Bool)
+        {
+            return (Bool == true ? "1" : "0");
+        }
+
+        public static int GetRandomNumber(int Min, int Max)
+        {
+            return RandomNumber.GenerateNewRandom(Min, Max);
+        }
+
+        public static double GetUnixTimestamp()
+        {
+            TimeSpan ts = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
+            return ts.TotalSeconds;
+        }
+
+        public static long Now()
+        {
+            TimeSpan ts = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
+            double unixTime = ts.TotalMilliseconds;
+            return (long)unixTime;
+        }
+
+        public static string FilterFigure(string figure)
+        {
+            foreach (char character in figure)
+            {
+                if (!isValid(character))
+                    return "sh-3338-93.ea-1406-62.hr-831-49.ha-3331-92.hd-180-7.ch-3334-93-1408.lg-3337-92.ca-1813-62";
+            }
+
+            return figure;
+        }
+
+        private static bool isValid(char character)
+        {
+            return Allowedchars.Contains(character);
+        }
+
+        public static bool IsValidAlphaNumeric(string inputStr)
+        {
+            inputStr = inputStr.ToLower();
+            if (string.IsNullOrEmpty(inputStr))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < inputStr.Length; i++)
+            {
+                if (!isValid(inputStr[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static string GetUsernameById(int UserId)
+        {
+            string Name = "Unknown User";
+
+            GameClient Client = GetGame().GetClientManager().GetClientByUserID(UserId);
+            if (Client != null && Client.GetHabbo() != null)
+                return Client.GetHabbo().Username;
+
+            UserCache User = WandalaEnvironment.GetGame().GetCacheManager().GenerateUser(UserId);
+            if (User != null)
+                return User.Username;
+
+            using (IQueryAdapter dbClient = WandalaEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.SetQuery("SELECT `username` FROM `users` WHERE `id` = @id LIMIT 1");
+                dbClient.AddParameter("id", UserId);
+                Name = dbClient.GetString();
+            }
+
+            if (string.IsNullOrEmpty(Name))
+                Name = "Unknown User";
+
+            return Name;
+        }
+
+        public static Habbo GetHabboById(int UserId)
+        {
+            try
+            {
+                GameClient Client = GetGame().GetClientManager().GetClientByUserID(UserId);
+                if (Client != null)
+                {
+                    Habbo User = Client.GetHabbo();
+                    if (User != null && User.Id > 0)
+                    {
+                        if (_usersCached.ContainsKey(UserId))
+                            _usersCached.TryRemove(UserId, out User);
+                        return User;
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        if (_usersCached.ContainsKey(UserId))
+                            return _usersCached[UserId];
+                        else
+                        {
+                            UserData data = UserDataFactory.GetUserData(UserId);
+                            if (data != null)
+                            {
+                                Habbo Generated = data.user;
+                                if (Generated != null)
+                                {
+                                    Generated.InitInformation(data);
+                                    _usersCached.TryAdd(UserId, Generated);
+                                    return Generated;
+                                }
+                            }
+                        }
+                    }
+                    catch { return null; }
+                }
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static Habbo GetHabboByUsername(String UserName)
+        {
+            try
+            {
+                using (IQueryAdapter dbClient = GetDatabaseManager().GetQueryReactor())
+                {
+                    dbClient.SetQuery("SELECT `id` FROM `users` WHERE `username` = @user LIMIT 1");
+                    dbClient.AddParameter("user", UserName);
+                    int id = dbClient.GetInteger();
+                    if (id > 0)
+                        return GetHabboById(Convert.ToInt32(id));
+                }
+                return null;
+            }
+            catch { return null; }
+        }
+
+        public static ConfigurationData GetConfig()
+        {
+            return _configuration;
+        }
+
+        public static Encoding GetDefaultEncoding()
+        {
+            return _defaultEncoding;
+        }
+
+        public static ConnectionHandling GetConnectionManager()
+        {
+            return _connectionManager;
+        }
+
+        public static Game GetGame()
+        {
+            return _game;
+        }
+
+        public static RCONSocket GetRCONSocket()
+        {
+            return _rcon;
+        }
+
+        public static FigureDataManager GetFigureManager()
+        {
+            return _figureManager;
+        }
+
+        public static DatabaseManager GetDatabaseManager()
+        {
+            return _manager;
+        }
+
+        public static LanguageManager GetLanguageManager()
+        {
+            return _languageManager;
+        }
+
+        public static SettingsManager GetSettingsManager()
+        {
+            return _settingsManager;
+        }
+
+        public static ICollection<Habbo> GetUsersCached()
+        {
+            return _usersCached.Values;
+        }
+
+        public static bool RemoveFromCache(int Id, out Habbo Data)
+        {
+            return _usersCached.TryRemove(Id, out Data);
         }
     }
 }

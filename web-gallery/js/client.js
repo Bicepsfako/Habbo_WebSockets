@@ -597,7 +597,9 @@ $(document).ready(function ()
     // Load Navigator
     function loadNavigator(data)
     {
+        var navigator = $("#navigator-rooms");
         var dataArray = $.parseJSON(data);
+        navigator.html('');
         for (var key in dataArray)
         {
             var color;
@@ -606,7 +608,7 @@ $(document).ready(function ()
             else
                 color = '#CAC9C0';
 
-            $("#navigator-rooms").append('' +
+            navigator.append('' +
                 '<li><div class="users_now" style="background:' + color + '"><span class="icon-users-now"' +
                 ' aria-hidden="true"></span> ' + dataArray[key].users_now + '</div> ' + dataArray[key].caption + '</li>' +
                 '');

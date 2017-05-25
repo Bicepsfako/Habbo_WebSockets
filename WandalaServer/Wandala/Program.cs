@@ -1,25 +1,57 @@
-﻿using Alchemy;
-using Alchemy.Classes;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Net;
-using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
-using System.Data;
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Security.Permissions;
+using Wandala.Core;
+using log4net;
+using log4net.Config;
 
 namespace Wandala
 {
     class Program
     {
+        private const int MF_BYCOMMAND = 0x00000000;
+        public const int SC_CLOSE = 0xF060;
+        private static readonly ILog log = LogManager.GetLogger("Wandala.Program");
+
+        [DllImport("Kernel32")]
+        private static extern bool SetConsoleCtrlHandler(EventHandler handler, bool add);
+
+        [DllImport("user32.dll")]
+        public static extern int DeleteMenu(IntPtr hMenu, int nPosition, int wFlags);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+
+        [DllImport("kernel32.dll", ExactSpelling = true)]
+        private static extern IntPtr GetConsoleWindow();
+
+        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.ControlAppDomain)]
+
         static void Main(string[] args)
         {
+            XmlConfigurator.Configure();
             Console.ForegroundColor = ConsoleColor.White;
             Console.CursorVisible = false;
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += MyHandler;
 
             WandalaEnvironment.Initialize();
+
+            while (true)
+            {
+                if (Console.ReadKey(true).Key == ConsoleKey.Enter)
+                {
+                    Console.Write("wandala> ");
+                    string Input = Console.ReadLine();
+
+                    if (Input.Length > 0)
+                    {
+                        string s = Input.Split(' ')[0];
+
+                        ConsoleCommands.InvokeCommand(s);
+                    }
+                }
+            }
         }
 
         private static void MyHandler(object sender, UnhandledExceptionEventArgs args)
@@ -27,7 +59,7 @@ namespace Wandala
             var e = (Exception)args.ExceptionObject;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("SYSTEM CRITICAL EXCEPTION: " + e);
-            //WandalaEnvironment.PerformShutDown();
+            WandalaEnvironment.PerformShutDown();
         }
 
         private enum CtrlType
