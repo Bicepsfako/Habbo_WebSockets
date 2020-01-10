@@ -20,9 +20,10 @@ $userQuery = $mysqli->query("SELECT * FROM users WHERE username = '" . $_SESSION
 $user = $userQuery->fetch_assoc();
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
     <meta charset="utf-8"/>
+    <title>Habbo WebSocket</title>
     <link href="./web-gallery/css/reset.css" rel="stylesheet"/>
     <link href="./web-gallery/css/global.css" rel="stylesheet"/>
     <link href="./web-gallery/css/client.css" rel="stylesheet"/>
@@ -46,7 +47,7 @@ $user = $userQuery->fetch_assoc();
     <div class="up_right_options">
         <span class="help" id="options_help">Ajuda</span>
         <span class="quit" id="options_quit"></span>
-        <span class="settings" id="options_settings"></span>
+        <span class="settings" id="options_settings"></span>t
     </div>
     <div class="bottom_bar">
         <span class="navigator" id="navigator" title="Navegador"></span>
@@ -112,7 +113,7 @@ $user = $userQuery->fetch_assoc();
 
 <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="./web-gallery/js/jquery.cookie.js"></script>
-<script src="./web-gallery/js/client.js"></script>
+<script src="web-gallery/js/jquery.cookie.js"></script>
+<script src="web-gallery/js/client.js"></script>
 </body>
 </html>

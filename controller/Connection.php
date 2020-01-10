@@ -14,7 +14,7 @@ class Connection
     private $password = "2296agosto";
     private $database = "habbo";
 
-    public function connection()
+    public function __construct()
     {
         $this->mysqli = mysqli_connect($this->host, $this->user, $this->password, $this->database) or die(mysqli_error());
     }
@@ -27,6 +27,5 @@ class Connection
 }
 
 $connectionFactory = new Connection();
-$connectionFactory->connection();
 $mysqli = $connectionFactory->getConnection();
 $mysqli->set_charset("utf-8");

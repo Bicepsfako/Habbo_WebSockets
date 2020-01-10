@@ -18,14 +18,14 @@
         <div class="alert" style="display:none" id="login_alert">teste</div>
         <div class="form-group">
             <label for="login_username">Usuário ou E-mail:</label>
-            <input type="text" id="login_username" class="form-control" autocomplete="false" autofocus />
+            <input type="text" id="login_username" class="form-control" autocomplete="false" autofocus/>
         </div>
         <div class="form-group">
             <label for="login_password">Senha:</label>
-            <input type="password" id="login_password" class="form-control" autocomplete="false" />
+            <input type="password" id="login_password" class="form-control" autocomplete="false"/>
         </div>
         <div class="form-group">
-            <input type="checkbox" id="login_remember" />
+            <input type="checkbox" id="login_remember"/>
             <label for="login_remember">Lembre-se de mim</label>
         </div>
         <button class="button button-blue" id="registerBtn">Cadastre-se</button>
@@ -37,23 +37,23 @@
 <div id="register" class="window" style="position:absolute;left:calc(50% - 150px);top:30%;display:none;z-index:1">
     <div class="header">Cadastre-se <span class="close" id="closeRegister"></span></div>
     <div class="body">
-        <div class="alert" style="display:none" id="reg_alert">teste</div>
+        <div class="alert" style="display:none" id="reg_alert"></div>
         <div class="form-group">
             <label for="reg_username">Usuário:</label>
-            <input type="text" id="reg_username" class="form-control" autocomplete="false" autofocus />
+            <input type="text" id="reg_username" class="form-control" autocomplete="false" autofocus/>
         </div>
         <div class="form-group">
             <label for="reg_email">E-mail:</label>
-            <input type="email" id="reg_email" class="form-control" autocomplete="false" />
+            <input type="email" id="reg_email" class="form-control" autocomplete="false"/>
         </div>
         <div class="form-group">
             <label for="reg_password">Senha:</label>
-            <input type="password" id="reg_password" class="form-control" autocomplete="false" />
+            <input type="password" id="reg_password" class="form-control" autocomplete="false"/>
         </div>
         <div class="form-group">
             <label for="reg_password2">Verifique a Senha:</label>
-        <input type="password" id="reg_password2" class="form-control" autocomplete="false" />
-    </div>
+            <input type="password" id="reg_password2" class="form-control" autocomplete="false"/>
+        </div>
         <button class="button button-green" style="width:calc(100% - 23px)" id="regComplete">Completar Cadastro</button>
     </div>
     <div class="footer"></div>
