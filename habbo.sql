@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               10.1.21-MariaDB - mariadb.org binary distribution
+-- Server version:               10.4.6-MariaDB - mariadb.org binary distribution
 -- Server OS:                    Win64
--- HeidiSQL Version:             9.4.0.5125
+-- HeidiSQL Version:             10.1.0.5464
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -11,21 +11,16 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
-
--- Dumping database structure for habbo
-CREATE DATABASE IF NOT EXISTS `habbo` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `habbo`;
-
 -- Dumping structure for table habbo.achievements
 CREATE TABLE IF NOT EXISTS `achievements` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `group_name` varchar(64) NOT NULL DEFAULT 'ACH_',
   `category` varchar(25) NOT NULL DEFAULT 'identity',
-  `level` int(11) NOT NULL DEFAULT '1',
-  `reward_pixels` int(11) NOT NULL DEFAULT '5',
-  `reward_points` int(11) NOT NULL DEFAULT '5',
-  `progress_needed` int(11) NOT NULL DEFAULT '1',
-  `game_id` int(11) NOT NULL DEFAULT '0',
+  `level` int(11) NOT NULL DEFAULT 1,
+  `reward_pixels` int(11) NOT NULL DEFAULT 5,
+  `reward_points` int(11) NOT NULL DEFAULT 5,
+  `progress_needed` int(11) NOT NULL DEFAULT 1,
+  `game_id` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=529 DEFAULT CHARSET=utf8;
 
@@ -467,11 +462,11 @@ INSERT INTO `achievements` (`id`, `group_name`, `category`, `level`, `reward_pix
 CREATE TABLE IF NOT EXISTS `achievements_talents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` enum('citizenship','status') NOT NULL DEFAULT 'citizenship',
-  `parent_category` int(11) NOT NULL DEFAULT '-1',
+  `parent_category` int(11) NOT NULL DEFAULT -1,
   `level` int(11) NOT NULL,
   `order_num` int(11) NOT NULL,
   `achievement_group` varchar(255) NOT NULL DEFAULT 'ACH_',
-  `achievement_level` int(11) NOT NULL DEFAULT '1',
+  `achievement_level` int(11) NOT NULL DEFAULT 1,
   `prize` varchar(255) NOT NULL DEFAULT 'A1 KUMIANKKA',
   `prize_baseitem` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
@@ -5831,7 +5826,7 @@ CREATE TABLE IF NOT EXISTS `bans` (
   `bantype` enum('user','ip','machine') NOT NULL DEFAULT 'user',
   `value` varchar(50) NOT NULL,
   `reason` text NOT NULL,
-  `expire` double NOT NULL DEFAULT '0',
+  `expire` double NOT NULL DEFAULT 0,
   `added_by` varchar(50) NOT NULL,
   `added_date` varchar(50) NOT NULL,
   `appeal_state` enum('0','1','2') NOT NULL DEFAULT '1',
@@ -5848,28 +5843,28 @@ DELETE FROM `bans`;
 -- Dumping structure for table habbo.bots
 CREATE TABLE IF NOT EXISTS `bots` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `room_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `user_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `room_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `user_id` int(10) unsigned NOT NULL DEFAULT 0,
   `ai_type` enum('generic','bartender','pet') NOT NULL DEFAULT 'generic',
   `name` varchar(100) NOT NULL,
   `motto` varchar(120) NOT NULL,
   `look` text NOT NULL,
-  `x` int(11) NOT NULL DEFAULT '0',
-  `y` int(11) NOT NULL DEFAULT '0',
-  `z` int(11) NOT NULL DEFAULT '0',
-  `rotation` int(11) NOT NULL DEFAULT '0',
+  `x` int(11) NOT NULL DEFAULT 0,
+  `y` int(11) NOT NULL DEFAULT 0,
+  `z` int(11) NOT NULL DEFAULT 0,
+  `rotation` int(11) NOT NULL DEFAULT 0,
   `walk_mode` enum('stand','freeroam','specified_range') NOT NULL DEFAULT 'freeroam',
-  `min_x` int(11) NOT NULL DEFAULT '0',
-  `min_y` int(11) NOT NULL DEFAULT '0',
-  `max_x` int(11) NOT NULL DEFAULT '0',
-  `max_y` int(11) NOT NULL DEFAULT '0',
-  `effect` int(2) NOT NULL DEFAULT '0',
+  `min_x` int(11) NOT NULL DEFAULT 0,
+  `min_y` int(11) NOT NULL DEFAULT 0,
+  `max_x` int(11) NOT NULL DEFAULT 0,
+  `max_y` int(11) NOT NULL DEFAULT 0,
+  `effect` int(2) NOT NULL DEFAULT 0,
   `gender` varchar(5) NOT NULL DEFAULT 'M',
-  `dance` int(11) NOT NULL DEFAULT '0',
+  `dance` int(11) NOT NULL DEFAULT 0,
   `automatic_chat` enum('false','true') NOT NULL DEFAULT 'false',
-  `speaking_interval` int(8) NOT NULL DEFAULT '30',
+  `speaking_interval` int(8) NOT NULL DEFAULT 30,
   `mix_sentences` enum('0','1') NOT NULL DEFAULT '0',
-  `chat_bubble` int(11) NOT NULL DEFAULT '2',
+  `chat_bubble` int(11) NOT NULL DEFAULT 2,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `user_id` (`user_id`),
@@ -5885,24 +5880,24 @@ DELETE FROM `bots`;
 -- Dumping structure for table habbo.bots_petdata
 CREATE TABLE IF NOT EXISTS `bots_petdata` (
   `id` int(11) unsigned NOT NULL,
-  `type` int(11) unsigned DEFAULT '0',
+  `type` int(11) unsigned DEFAULT 0,
   `race` varchar(11) DEFAULT NULL,
   `color` varchar(11) DEFAULT NULL,
-  `energy` int(11) DEFAULT '0',
-  `experience` int(11) DEFAULT '0',
-  `nutrition` int(11) DEFAULT '0',
-  `respect` int(11) DEFAULT '0',
+  `energy` int(11) DEFAULT 0,
+  `experience` int(11) DEFAULT 0,
+  `nutrition` int(11) DEFAULT 0,
+  `respect` int(11) DEFAULT 0,
   `createstamp` int(11) DEFAULT NULL,
-  `have_saddle` int(11) DEFAULT '0',
-  `hairdye` int(11) DEFAULT '1',
-  `pethair` int(11) DEFAULT '-1',
-  `anyone_ride` int(11) DEFAULT '0',
+  `have_saddle` int(11) DEFAULT 0,
+  `hairdye` int(11) DEFAULT 1,
+  `pethair` int(11) DEFAULT -1,
+  `anyone_ride` int(11) DEFAULT 0,
   `gnome_clothing` varchar(85) DEFAULT '-1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table habbo.bots_petdata: ~1 rows (approximately)
+-- Dumping data for table habbo.bots_petdata: ~0 rows (approximately)
 DELETE FROM `bots_petdata`;
 /*!40000 ALTER TABLE `bots_petdata` DISABLE KEYS */;
 INSERT INTO `bots_petdata` (`id`, `type`, `race`, `color`, `energy`, `experience`, `nutrition`, `respect`, `createstamp`, `have_saddle`, `hairdye`, `pethair`, `anyone_ride`, `gnome_clothing`) VALUES
@@ -5913,7 +5908,7 @@ INSERT INTO `bots_petdata` (`id`, `type`, `race`, `color`, `energy`, `experience
 CREATE TABLE IF NOT EXISTS `bots_pet_commands` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `input_title` varchar(255) NOT NULL,
-  `input` text,
+  `input` text DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
@@ -6195,21 +6190,21 @@ CREATE TABLE IF NOT EXISTS `catalog_items` (
   `page_id` int(11) NOT NULL,
   `item_id` varchar(120) NOT NULL,
   `catalog_name` varchar(100) NOT NULL,
-  `cost_credits` int(11) NOT NULL DEFAULT '3',
-  `cost_pixels` int(11) NOT NULL DEFAULT '0',
-  `cost_diamonds` int(11) NOT NULL DEFAULT '0',
-  `amount` int(11) NOT NULL DEFAULT '1',
-  `limited_sells` int(11) NOT NULL DEFAULT '0',
-  `limited_stack` int(11) NOT NULL DEFAULT '0',
+  `cost_credits` int(11) NOT NULL DEFAULT 3,
+  `cost_pixels` int(11) NOT NULL DEFAULT 0,
+  `cost_diamonds` int(11) NOT NULL DEFAULT 0,
+  `amount` int(11) NOT NULL DEFAULT 1,
+  `limited_sells` int(11) NOT NULL DEFAULT 0,
+  `limited_stack` int(11) NOT NULL DEFAULT 0,
   `offer_active` enum('0','1') NOT NULL DEFAULT '1',
   `extradata` varchar(255) NOT NULL DEFAULT '',
   `badge` varchar(5) NOT NULL DEFAULT '',
-  `offer_id` int(11) NOT NULL DEFAULT '-1',
+  `offer_id` int(11) NOT NULL DEFAULT -1,
   PRIMARY KEY (`id`),
   KEY `item_ids` (`item_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=88805280 DEFAULT CHARSET=latin1;
 
--- Dumping data for table habbo.catalog_items: ~7,701 rows (approximately)
+-- Dumping data for table habbo.catalog_items: ~7,697 rows (approximately)
 DELETE FROM `catalog_items`;
 /*!40000 ALTER TABLE `catalog_items` DISABLE KEYS */;
 INSERT INTO `catalog_items` (`id`, `page_id`, `item_id`, `catalog_name`, `cost_credits`, `cost_pixels`, `cost_diamonds`, `amount`, `limited_sells`, `limited_stack`, `offer_active`, `extradata`, `badge`, `offer_id`) VALUES
@@ -14021,8 +14016,8 @@ INSERT INTO `catalog_items` (`id`, `page_id`, `item_id`, `catalog_name`, `cost_c
 CREATE TABLE IF NOT EXISTS `catalog_marketplace_data` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
   `sprite` int(7) NOT NULL,
-  `sold` int(7) NOT NULL DEFAULT '0',
-  `avgprice` int(9) NOT NULL DEFAULT '0',
+  `sold` int(7) NOT NULL DEFAULT 0,
+  `avgprice` int(9) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -14037,7 +14032,7 @@ CREATE TABLE IF NOT EXISTS `catalog_marketplace_offers` (
   `item_id` int(10) unsigned NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `asking_price` int(11) NOT NULL,
-  `total_price` int(11) NOT NULL DEFAULT '0',
+  `total_price` int(11) NOT NULL DEFAULT 0,
   `public_name` text NOT NULL,
   `sprite_id` int(11) NOT NULL,
   `item_type` enum('1','2') NOT NULL DEFAULT '1',
@@ -14045,8 +14040,8 @@ CREATE TABLE IF NOT EXISTS `catalog_marketplace_offers` (
   `state` enum('1','2') NOT NULL DEFAULT '1',
   `extra_data` text NOT NULL,
   `furni_id` int(10) unsigned NOT NULL,
-  `limited_number` int(11) NOT NULL DEFAULT '0',
-  `limited_stack` int(11) NOT NULL DEFAULT '0',
+  `limited_number` int(11) NOT NULL DEFAULT 0,
+  `limited_stack` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`offer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -14058,13 +14053,13 @@ DELETE FROM `catalog_marketplace_offers`;
 -- Dumping structure for table habbo.catalog_pages
 CREATE TABLE IF NOT EXISTS `catalog_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `parent_id` int(11) NOT NULL DEFAULT '-1',
+  `parent_id` int(11) NOT NULL DEFAULT -1,
   `caption` varchar(35) NOT NULL,
-  `icon_image` int(11) NOT NULL DEFAULT '1',
+  `icon_image` int(11) NOT NULL DEFAULT 1,
   `visible` enum('0','1') NOT NULL DEFAULT '1',
   `enabled` enum('0','1') NOT NULL DEFAULT '1',
-  `min_rank` int(11) unsigned NOT NULL DEFAULT '1',
-  `min_vip` int(11) NOT NULL DEFAULT '0',
+  `min_rank` int(11) unsigned NOT NULL DEFAULT 1,
+  `min_vip` int(11) NOT NULL DEFAULT 0,
   `order_num` int(11) NOT NULL,
   `page_link` varchar(35) NOT NULL DEFAULT '',
   `page_layout` varchar(35) NOT NULL DEFAULT 'default_3x3',
@@ -14650,9 +14645,9 @@ CREATE TABLE IF NOT EXISTS `catalog_promotions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(35) DEFAULT '',
   `image` varchar(75) DEFAULT '',
-  `unknown` int(11) DEFAULT '0',
+  `unknown` int(11) DEFAULT 0,
   `page_link` varchar(35) DEFAULT '',
-  `parent_id` int(11) DEFAULT '0',
+  `parent_id` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
@@ -14670,9 +14665,9 @@ INSERT INTO `catalog_promotions` (`id`, `title`, `image`, `unknown`, `page_link`
 CREATE TABLE IF NOT EXISTS `catalog_vouchers` (
   `voucher` varchar(45) NOT NULL,
   `type` enum('credits','duckets') NOT NULL DEFAULT 'credits',
-  `value` int(11) NOT NULL DEFAULT '100',
-  `current_uses` int(11) NOT NULL DEFAULT '0',
-  `max_uses` int(11) NOT NULL DEFAULT '1',
+  `value` int(11) NOT NULL DEFAULT 100,
+  `current_uses` int(11) NOT NULL DEFAULT 0,
+  `max_uses` int(11) NOT NULL DEFAULT 1,
   `enabled` enum('0','1') DEFAULT '1',
   PRIMARY KEY (`voucher`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -14720,9 +14715,9 @@ DELETE FROM `chatlogs_console`;
 -- Dumping structure for table habbo.chatlogs_console_invitations
 CREATE TABLE IF NOT EXISTS `chatlogs_console_invitations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT 0,
   `message` text NOT NULL,
-  `timestamp` double NOT NULL DEFAULT '0',
+  `timestamp` double NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -15322,34 +15317,34 @@ CREATE TABLE IF NOT EXISTS `furniture` (
   `item_name` varchar(70) NOT NULL,
   `public_name` varchar(56) NOT NULL DEFAULT '',
   `type` enum('s','i','e','h','v','r','b','p') NOT NULL DEFAULT 's',
-  `width` int(11) NOT NULL DEFAULT '1',
-  `length` int(11) NOT NULL DEFAULT '1',
-  `stack_height` double NOT NULL DEFAULT '0',
+  `width` int(11) NOT NULL DEFAULT 1,
+  `length` int(11) NOT NULL DEFAULT 1,
+  `stack_height` double NOT NULL DEFAULT 0,
   `can_stack` enum('0','1') NOT NULL DEFAULT '1',
   `can_sit` enum('0','1') NOT NULL DEFAULT '0',
   `is_walkable` enum('0','1') NOT NULL DEFAULT '0',
-  `sprite_id` int(11) NOT NULL DEFAULT '0',
+  `sprite_id` int(11) NOT NULL DEFAULT 0,
   `allow_recycle` enum('0','1') NOT NULL DEFAULT '1',
   `allow_trade` enum('0','1') NOT NULL DEFAULT '1',
   `allow_marketplace_sell` enum('0','1') NOT NULL DEFAULT '1',
   `allow_gift` enum('0','1') NOT NULL DEFAULT '1',
   `allow_inventory_stack` enum('0','1') NOT NULL DEFAULT '1',
   `interaction_type` varchar(25) NOT NULL DEFAULT 'default',
-  `behaviour_data` int(11) NOT NULL DEFAULT '0',
-  `interaction_modes_count` int(11) NOT NULL DEFAULT '1',
+  `behaviour_data` int(11) NOT NULL DEFAULT 0,
+  `interaction_modes_count` int(11) NOT NULL DEFAULT 1,
   `vending_ids` varchar(255) NOT NULL DEFAULT '0',
   `height_adjustable` varchar(50) NOT NULL DEFAULT '0',
-  `effect_id` int(3) NOT NULL DEFAULT '0',
-  `wired_id` int(11) NOT NULL DEFAULT '0',
+  `effect_id` int(3) NOT NULL DEFAULT 0,
+  `wired_id` int(11) NOT NULL DEFAULT 0,
   `is_rare` enum('0','1') NOT NULL DEFAULT '0',
-  `clothing_id` int(11) NOT NULL DEFAULT '0',
+  `clothing_id` int(11) NOT NULL DEFAULT 0,
   `extra_rot` enum('0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `sprite_id` (`sprite_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1000000109 DEFAULT CHARSET=latin1;
 
--- Dumping data for table habbo.furniture: ~7,215 rows (approximately)
+-- Dumping data for table habbo.furniture: ~7,012 rows (approximately)
 DELETE FROM `furniture`;
 /*!40000 ALTER TABLE `furniture` DISABLE KEYS */;
 INSERT INTO `furniture` (`id`, `item_name`, `public_name`, `type`, `width`, `length`, `stack_height`, `can_stack`, `can_sit`, `is_walkable`, `sprite_id`, `allow_recycle`, `allow_trade`, `allow_marketplace_sell`, `allow_gift`, `allow_inventory_stack`, `interaction_type`, `behaviour_data`, `interaction_modes_count`, `vending_ids`, `height_adjustable`, `effect_id`, `wired_id`, `is_rare`, `clothing_id`, `extra_rot`) VALUES
@@ -22548,7 +22543,7 @@ INSERT INTO `furniture` (`id`, `item_name`, `public_name`, `type`, `width`, `len
 
 -- Dumping structure for table habbo.games_config
 CREATE TABLE IF NOT EXISTS `games_config` (
-  `id` int(11) NOT NULL DEFAULT '0',
+  `id` int(11) NOT NULL DEFAULT 0,
   `name` varchar(25) NOT NULL DEFAULT '',
   `colour_one` varchar(25) NOT NULL DEFAULT '',
   `colour_two` varchar(25) NOT NULL DEFAULT '',
@@ -22560,12 +22555,12 @@ CREATE TABLE IF NOT EXISTS `games_config` (
   `game_server_port` varchar(25) NOT NULL DEFAULT '',
   `socket_policy_port` varchar(25) NOT NULL DEFAULT '',
   `game_enabled` enum('0','1') DEFAULT '1',
-  `last_reset` double DEFAULT '0',
+  `last_reset` double DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table habbo.games_config: ~1 rows (approximately)
+-- Dumping data for table habbo.games_config: ~0 rows (approximately)
 DELETE FROM `games_config`;
 /*!40000 ALTER TABLE `games_config` DISABLE KEYS */;
 INSERT INTO `games_config` (`id`, `name`, `colour_one`, `colour_two`, `resource_path`, `string_three`, `game_swf`, `game_assets`, `game_server_host`, `game_server_port`, `socket_policy_port`, `game_enabled`, `last_reset`) VALUES
@@ -22580,10 +22575,10 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `badge` varchar(50) NOT NULL,
   `owner_id` int(11) unsigned NOT NULL,
   `created` int(50) NOT NULL,
-  `room_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `room_id` int(10) unsigned NOT NULL DEFAULT 0,
   `state` enum('0','1','2') NOT NULL DEFAULT '0',
-  `colour1` int(11) NOT NULL DEFAULT '242424',
-  `colour2` int(11) NOT NULL DEFAULT '242424',
+  `colour1` int(11) NOT NULL DEFAULT 242424,
+  `colour2` int(11) NOT NULL DEFAULT 242424,
   `admindeco` enum('0','1') NOT NULL DEFAULT '1',
   `forum_enabled` enum('0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -23127,16 +23122,16 @@ DELETE FROM `group_requests`;
 CREATE TABLE IF NOT EXISTS `items` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
-  `room_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `room_id` int(10) unsigned NOT NULL DEFAULT 0,
   `base_item` int(10) unsigned NOT NULL,
   `extra_data` text NOT NULL,
-  `x` int(11) NOT NULL DEFAULT '0',
-  `y` int(11) NOT NULL DEFAULT '0',
-  `z` double NOT NULL DEFAULT '0',
-  `rot` int(11) NOT NULL DEFAULT '0',
+  `x` int(11) NOT NULL DEFAULT 0,
+  `y` int(11) NOT NULL DEFAULT 0,
+  `z` double NOT NULL DEFAULT 0,
+  `rot` int(11) NOT NULL DEFAULT 0,
   `wall_pos` varchar(100) DEFAULT '',
-  `limited_number` int(11) DEFAULT '0',
-  `limited_stack` int(11) DEFAULT '0',
+  `limited_number` int(11) DEFAULT 0,
+  `limited_stack` int(11) DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `userid` (`user_id`) USING BTREE,
@@ -23144,7 +23139,7 @@ CREATE TABLE IF NOT EXISTS `items` (
   KEY `base_item` (`base_item`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table habbo.items: ~1 rows (approximately)
+-- Dumping data for table habbo.items: ~0 rows (approximately)
 DELETE FROM `items`;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
 INSERT INTO `items` (`id`, `user_id`, `room_id`, `base_item`, `extra_data`, `x`, `y`, `z`, `rot`, `wall_pos`, `limited_number`, `limited_stack`) VALUES
@@ -23154,7 +23149,7 @@ INSERT INTO `items` (`id`, `user_id`, `room_id`, `base_item`, `extra_data`, `x`,
 -- Dumping structure for table habbo.items_groups
 CREATE TABLE IF NOT EXISTS `items_groups` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `group_id` int(11) NOT NULL DEFAULT '0',
+  `group_id` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `group_id` (`group_id`)
@@ -23199,10 +23194,10 @@ DELETE FROM `logs_client_namechange`;
 -- Dumping structure for table habbo.logs_client_staff
 CREATE TABLE IF NOT EXISTS `logs_client_staff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT 0,
   `data_string` text NOT NULL,
   `machine_id` varchar(75) NOT NULL DEFAULT '',
-  `timestamp` double NOT NULL DEFAULT '0',
+  `timestamp` double NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -23214,10 +23209,10 @@ DELETE FROM `logs_client_staff`;
 -- Dumping structure for table habbo.logs_client_trade
 CREATE TABLE IF NOT EXISTS `logs_client_trade` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `1id` int(11) DEFAULT '0',
-  `2id` int(11) DEFAULT '0',
-  `1items` text,
-  `2items` text,
+  `1id` int(11) DEFAULT 0,
+  `2id` int(11) DEFAULT 0,
+  `1items` text DEFAULT NULL,
+  `2items` text DEFAULT NULL,
   `timestamp` char(20) DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -23245,10 +23240,10 @@ DELETE FROM `messenger_friendships`;
 -- Dumping structure for table habbo.messenger_offline_messages
 CREATE TABLE IF NOT EXISTS `messenger_offline_messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `to_id` int(11) unsigned NOT NULL DEFAULT '0',
-  `from_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `to_id` int(11) unsigned NOT NULL DEFAULT 0,
+  `from_id` int(11) unsigned NOT NULL DEFAULT 0,
   `message` varchar(255) NOT NULL,
-  `timestamp` double NOT NULL DEFAULT '0',
+  `timestamp` double NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -23277,7 +23272,7 @@ CREATE TABLE IF NOT EXISTS `moderation_presets` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `type` enum('user','room') NOT NULL DEFAULT 'user',
   `message` text NOT NULL,
-  `enabled` int(11) DEFAULT '1',
+  `enabled` int(11) DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
@@ -23319,10 +23314,10 @@ CREATE TABLE IF NOT EXISTS `moderation_preset_action_messages` (
   `parent_id` int(10) unsigned NOT NULL,
   `caption` varchar(32) NOT NULL,
   `message_text` text NOT NULL,
-  `mute_hours` int(11) NOT NULL DEFAULT '0',
-  `ban_hours` int(11) NOT NULL DEFAULT '24',
-  `ip_ban_hours` int(11) NOT NULL DEFAULT '0',
-  `trade_lock_days` int(11) NOT NULL DEFAULT '0',
+  `mute_hours` int(11) NOT NULL DEFAULT 0,
+  `ban_hours` int(11) NOT NULL DEFAULT 24,
+  `ip_ban_hours` int(11) NOT NULL DEFAULT 0,
+  `trade_lock_days` int(11) NOT NULL DEFAULT 0,
   `notice` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
@@ -23453,11 +23448,11 @@ CREATE TABLE IF NOT EXISTS `navigator_categories` (
   `category_identifier` varchar(35) NOT NULL DEFAULT '',
   `public_name` varchar(35) NOT NULL DEFAULT '',
   `view_mode` enum('REGULAR','THUMBNAIL') NOT NULL DEFAULT 'REGULAR',
-  `required_rank` int(11) NOT NULL DEFAULT '1',
+  `required_rank` int(11) NOT NULL DEFAULT 1,
   `category_type` varchar(25) NOT NULL DEFAULT 'category',
   `search_allowance` enum('NOTHING','SHOW_MORE') NOT NULL DEFAULT 'SHOW_MORE',
   `enabled` enum('0','1') NOT NULL DEFAULT '1',
-  `order_id` int(11) NOT NULL DEFAULT '0',
+  `order_id` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -23502,7 +23497,7 @@ CREATE TABLE IF NOT EXISTS `navigator_publics` (
   `caption` varchar(64) NOT NULL,
   `description` varchar(150) NOT NULL,
   `image_url` text NOT NULL,
-  `order_num` int(11) NOT NULL DEFAULT '1',
+  `order_num` int(11) NOT NULL DEFAULT 1,
   `enabled` enum('0','1') NOT NULL DEFAULT '1',
   PRIMARY KEY (`room_id`),
   KEY `ordernum` (`order_num`)
@@ -23580,8 +23575,8 @@ INSERT INTO `permissions` (`id`, `permission`, `description`) VALUES
 -- Dumping structure for table habbo.permissions_commands
 CREATE TABLE IF NOT EXISTS `permissions_commands` (
   `command` varchar(45) NOT NULL DEFAULT '',
-  `group_id` int(11) NOT NULL DEFAULT '4',
-  `subscription_id` int(11) NOT NULL DEFAULT '0',
+  `group_id` int(11) NOT NULL DEFAULT 4,
+  `subscription_id` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`command`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -23979,14 +23974,14 @@ INSERT INTO `permissions_subscriptions` (`id`, `subscription_id`, `permission_id
 CREATE TABLE IF NOT EXISTS `quests` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `type` varchar(32) NOT NULL DEFAULT '',
-  `level_num` int(11) NOT NULL DEFAULT '0',
-  `goal_type` int(10) NOT NULL DEFAULT '0',
-  `goal_data` int(10) unsigned NOT NULL DEFAULT '0',
+  `level_num` int(11) NOT NULL DEFAULT 0,
+  `goal_type` int(10) NOT NULL DEFAULT 0,
+  `goal_data` int(10) unsigned NOT NULL DEFAULT 0,
   `action` varchar(32) NOT NULL DEFAULT '',
-  `pixel_reward` int(11) NOT NULL DEFAULT '10',
+  `pixel_reward` int(11) NOT NULL DEFAULT 10,
   `data_bit` varchar(2) NOT NULL DEFAULT '',
   `reward_type` enum('0','1','2','3','4','5') NOT NULL DEFAULT '0',
-  `timestamp_unlock` int(11) NOT NULL DEFAULT '0',
+  `timestamp_unlock` int(11) NOT NULL DEFAULT 0,
   `timestamp_lock` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8;
@@ -24083,16 +24078,16 @@ INSERT INTO `ranks` (`id`, `name`, `badgeid`, `title`, `tab_colour`) VALUES
 -- Dumping structure for table habbo.rooms
 CREATE TABLE IF NOT EXISTS `rooms` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `roomtype` enum('public','private') NOT NULL DEFAULT 'private',
+  `type` enum('public','private') NOT NULL DEFAULT 'private',
   `caption` varchar(100) NOT NULL DEFAULT 'Room',
   `owner` varchar(75) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT '',
-  `category` int(11) NOT NULL DEFAULT '0',
+  `category` int(11) NOT NULL DEFAULT 0,
   `state` enum('open','locked','password','invisible') NOT NULL DEFAULT 'open',
-  `users_now` int(11) NOT NULL DEFAULT '0',
-  `users_max` int(11) NOT NULL DEFAULT '25',
+  `users_now` int(11) NOT NULL DEFAULT 0,
+  `users_max` int(11) NOT NULL DEFAULT 25,
   `model_name` varchar(50) NOT NULL,
-  `score` int(11) NOT NULL DEFAULT '0',
+  `score` int(11) NOT NULL DEFAULT 0,
   `tags` varchar(100) NOT NULL DEFAULT '',
   `password` varchar(30) NOT NULL DEFAULT '',
   `wallpaper` varchar(10) NOT NULL DEFAULT '0.0',
@@ -24102,18 +24097,18 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   `allow_pets_eat` enum('0','1') NOT NULL DEFAULT '0',
   `room_blocking_disabled` enum('0','1') NOT NULL DEFAULT '0',
   `allow_hidewall` enum('0','1') NOT NULL DEFAULT '0',
-  `wallthick` int(1) NOT NULL DEFAULT '0',
-  `floorthick` int(1) NOT NULL DEFAULT '0',
-  `group_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `wallthick` int(1) NOT NULL DEFAULT 0,
+  `floorthick` int(1) NOT NULL DEFAULT 0,
+  `group_id` int(11) unsigned NOT NULL DEFAULT 0,
   `mute_settings` enum('0','1') NOT NULL DEFAULT '1',
   `ban_settings` enum('0','1') NOT NULL DEFAULT '1',
   `kick_settings` enum('0','1','2') NOT NULL DEFAULT '1',
-  `chat_mode` int(11) NOT NULL DEFAULT '0',
-  `chat_size` int(11) NOT NULL DEFAULT '0',
-  `chat_speed` int(11) NOT NULL DEFAULT '0',
-  `chat_extra_flood` int(11) NOT NULL DEFAULT '0',
-  `chat_hearing_distance` int(11) NOT NULL DEFAULT '14',
-  `trade_settings` int(11) NOT NULL DEFAULT '2',
+  `chat_mode` int(11) NOT NULL DEFAULT 0,
+  `chat_size` int(11) NOT NULL DEFAULT 0,
+  `chat_speed` int(11) NOT NULL DEFAULT 0,
+  `chat_extra_flood` int(11) NOT NULL DEFAULT 0,
+  `chat_hearing_distance` int(11) NOT NULL DEFAULT 14,
+  `trade_settings` int(11) NOT NULL DEFAULT 2,
   `push_enabled` enum('0','1') NOT NULL DEFAULT '1',
   `pull_enabled` enum('0','1') NOT NULL DEFAULT '1',
   `enables_enabled` enum('0','1') NOT NULL DEFAULT '1',
@@ -24125,7 +24120,7 @@ CREATE TABLE IF NOT EXISTS `rooms` (
   UNIQUE KEY `id` (`id`),
   KEY `owner` (`owner`),
   KEY `users_now` (`users_now`),
-  KEY `roomtype` (`roomtype`),
+  KEY `roomtype` (`type`),
   KEY `caption` (`caption`),
   KEY `score` (`score`),
   KEY `category` (`category`),
@@ -24139,9 +24134,9 @@ DELETE FROM `rooms`;
 
 -- Dumping structure for table habbo.room_bans
 CREATE TABLE IF NOT EXISTS `room_bans` (
-  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
-  `room_id` int(11) unsigned NOT NULL DEFAULT '0',
-  `expire` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) unsigned NOT NULL DEFAULT 0,
+  `room_id` int(11) unsigned NOT NULL DEFAULT 0,
+  `expire` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`,`room_id`),
   KEY `user_id` (`user_id`),
   KEY `room_id` (`room_id`)
@@ -24208,7 +24203,7 @@ INSERT INTO `room_chat_styles` (`id`, `name`, `required_right`) VALUES
 CREATE TABLE IF NOT EXISTS `room_filter` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `word` varchar(15) NOT NULL DEFAULT '',
-  `room_id` int(11) NOT NULL DEFAULT '0',
+  `room_id` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `room_id` (`room_id`),
   KEY `word` (`word`)
@@ -24274,19 +24269,19 @@ CREATE TABLE IF NOT EXISTS `room_models` (
   `id` varchar(100) NOT NULL,
   `door_x` int(11) NOT NULL,
   `door_y` int(11) NOT NULL,
-  `door_z` double NOT NULL,
-  `door_dir` int(4) NOT NULL DEFAULT '2',
+  `door_z` int(11) NOT NULL,
+  `door_dir` int(4) NOT NULL DEFAULT 2,
   `heightmap` text NOT NULL,
   `public_items` text NOT NULL,
   `club_only` enum('0','1') NOT NULL DEFAULT '0',
   `poolmap` varchar(100) NOT NULL DEFAULT '',
   `custom` enum('0','1') NOT NULL DEFAULT '0',
-  `wall_height` int(11) NOT NULL DEFAULT '-1',
+  `wall_height` int(11) NOT NULL DEFAULT -1,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table habbo.room_models: ~37 rows (approximately)
+-- Dumping data for table habbo.room_models: ~9 rows (approximately)
 DELETE FROM `room_models`;
 /*!40000 ALTER TABLE `room_models` DISABLE KEYS */;
 INSERT INTO `room_models` (`id`, `door_x`, `door_y`, `door_z`, `door_dir`, `heightmap`, `public_items`, `club_only`, `poolmap`, `custom`, `wall_height`) VALUES
@@ -24334,9 +24329,9 @@ CREATE TABLE IF NOT EXISTS `room_promotions` (
   `room_id` int(11) NOT NULL,
   `title` varchar(35) NOT NULL DEFAULT '',
   `description` varchar(220) NOT NULL DEFAULT '',
-  `timestamp_start` double NOT NULL DEFAULT '0',
-  `timestamp_expire` double NOT NULL DEFAULT '0',
-  `category_id` int(11) NOT NULL DEFAULT '0',
+  `timestamp_start` double NOT NULL DEFAULT 0,
+  `timestamp_expire` double NOT NULL DEFAULT 0,
+  `category_id` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`room_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -24364,7 +24359,7 @@ DELETE FROM `room_rights`;
 CREATE TABLE IF NOT EXISTS `server_landing` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(35) DEFAULT '',
-  `text` text,
+  `text` text DEFAULT NULL,
   `button_text` varchar(25) DEFAULT '',
   `button_type` enum('0','1','2','3') DEFAULT '0',
   `button_link` varchar(90) DEFAULT NULL,
@@ -24373,7 +24368,7 @@ CREATE TABLE IF NOT EXISTS `server_landing` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table habbo.server_landing: ~1 rows (approximately)
+-- Dumping data for table habbo.server_landing: ~0 rows (approximately)
 DELETE FROM `server_landing`;
 /*!40000 ALTER TABLE `server_landing` DISABLE KEYS */;
 INSERT INTO `server_landing` (`id`, `title`, `text`, `button_text`, `button_type`, `button_link`, `image_link`) VALUES
@@ -24383,7 +24378,7 @@ INSERT INTO `server_landing` (`id`, `title`, `text`, `button_text`, `button_type
 -- Dumping structure for table habbo.server_locale
 CREATE TABLE IF NOT EXISTS `server_locale` (
   `key` varchar(255) NOT NULL,
-  `value` text,
+  `value` text DEFAULT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -24405,8 +24400,8 @@ INSERT INTO `server_locale` (`key`, `value`) VALUES
 -- Dumping structure for table habbo.server_rewards
 CREATE TABLE IF NOT EXISTS `server_rewards` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `reward_start` int(11) NOT NULL DEFAULT '0',
-  `reward_end` int(11) NOT NULL DEFAULT '0',
+  `reward_start` int(11) NOT NULL DEFAULT 0,
+  `reward_end` int(11) NOT NULL DEFAULT 0,
   `reward_type` enum('credits','badge','diamonds','duckets','none') NOT NULL DEFAULT 'none',
   `reward_data` varchar(255) NOT NULL,
   `message` varchar(255) NOT NULL,
@@ -24463,12 +24458,12 @@ INSERT INTO `server_settings` (`key`, `value`, `description`) VALUES
 
 -- Dumping structure for table habbo.server_status
 CREATE TABLE IF NOT EXISTS `server_status` (
-  `users_online` int(11) NOT NULL DEFAULT '0',
-  `loaded_rooms` int(11) NOT NULL DEFAULT '0',
+  `users_online` int(11) NOT NULL DEFAULT 0,
+  `loaded_rooms` int(11) NOT NULL DEFAULT 0,
   UNIQUE KEY `users_online` (`users_online`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table habbo.server_status: ~1 rows (approximately)
+-- Dumping data for table habbo.server_status: ~0 rows (approximately)
 DELETE FROM `server_status`;
 /*!40000 ALTER TABLE `server_status` DISABLE KEYS */;
 INSERT INTO `server_status` (`users_online`, `loaded_rooms`) VALUES
@@ -24477,12 +24472,12 @@ INSERT INTO `server_status` (`users_online`, `loaded_rooms`) VALUES
 
 -- Dumping structure for table habbo.subscriptions
 CREATE TABLE IF NOT EXISTS `subscriptions` (
-  `id` int(10) NOT NULL DEFAULT '0',
+  `id` int(10) NOT NULL DEFAULT 0,
   `name` varchar(50) NOT NULL,
   `badge_code` varchar(10) NOT NULL,
-  `credits` int(11) NOT NULL DEFAULT '100',
-  `duckets` int(11) NOT NULL DEFAULT '100',
-  `respects` int(11) NOT NULL DEFAULT '3',
+  `credits` int(11) NOT NULL DEFAULT 100,
+  `duckets` int(11) NOT NULL DEFAULT 100,
+  `respects` int(11) NOT NULL DEFAULT 3,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -24499,7 +24494,7 @@ INSERT INTO `subscriptions` (`id`, `name`, `badge_code`, `credits`, `duckets`, `
 CREATE TABLE IF NOT EXISTS `talents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` enum('citizenship','helper') NOT NULL,
-  `level` int(11) DEFAULT '0',
+  `level` int(11) DEFAULT 0,
   `data_actions` text NOT NULL,
   `data_gifts` text NOT NULL,
   PRIMARY KEY (`id`)
@@ -24518,10 +24513,10 @@ INSERT INTO `talents` (`id`, `type`, `level`, `data_actions`, `data_gifts`) VALU
 -- Dumping structure for table habbo.talents_sub_levels
 CREATE TABLE IF NOT EXISTS `talents_sub_levels` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `talent_level` int(11) NOT NULL DEFAULT '0',
-  `sub_level` int(11) NOT NULL DEFAULT '0',
+  `talent_level` int(11) NOT NULL DEFAULT 0,
+  `sub_level` int(11) NOT NULL DEFAULT 0,
   `badge_code` varchar(45) NOT NULL DEFAULT '',
-  `required_progress` int(11) NOT NULL DEFAULT '0',
+  `required_progress` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
@@ -24550,38 +24545,38 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) DEFAULT NULL,
   `mail` varchar(255) DEFAULT 'defaultuser@meth0d.org',
   `auth_ticket` varchar(60) NOT NULL,
-  `rank` int(1) unsigned DEFAULT '1',
-  `rank_vip` int(1) DEFAULT '1',
-  `credits` int(11) DEFAULT '50000',
-  `vip_points` int(11) DEFAULT '0',
-  `activity_points` int(11) DEFAULT '5000',
+  `rank` int(1) unsigned DEFAULT 1,
+  `rank_vip` int(1) DEFAULT 1,
+  `credits` int(11) DEFAULT 50000,
+  `vip_points` int(11) DEFAULT 0,
+  `activity_points` int(11) DEFAULT 5000,
   `look` char(255) DEFAULT NULL,
   `gender` enum('M','F') DEFAULT 'M',
   `motto` char(50) DEFAULT NULL,
   `account_created` char(12) DEFAULT '0',
-  `last_online` int(11) DEFAULT '0',
+  `last_online` int(11) DEFAULT 0,
   `online` enum('0','1') DEFAULT '0',
   `ip_last` varchar(45) DEFAULT '',
   `ip_reg` varchar(45) DEFAULT NULL,
-  `home_room` int(10) DEFAULT '0',
+  `home_room` int(10) DEFAULT 0,
   `is_muted` enum('0','1') DEFAULT '0',
   `block_newfriends` enum('0','1') DEFAULT '0',
   `hide_online` enum('0','1') DEFAULT '0',
   `hide_inroom` enum('0','1') DEFAULT '0',
   `vip` enum('0','1') DEFAULT '1',
   `volume` varchar(15) DEFAULT '100,100,100',
-  `last_change` int(20) DEFAULT '0',
+  `last_change` int(20) DEFAULT 0,
   `machine_id` varchar(125) DEFAULT '',
   `focus_preference` enum('0','1') DEFAULT '0',
   `chat_preference` enum('0','1') DEFAULT '0',
   `pets_muted` enum('0','1') DEFAULT '0',
   `bots_muted` enum('0','1') DEFAULT '0',
   `advertising_report_blocked` enum('0','1') DEFAULT '0',
-  `gotw_points` int(11) DEFAULT '0',
+  `gotw_points` int(11) DEFAULT 0,
   `ignore_invites` enum('0','1') DEFAULT '0',
-  `time_muted` double DEFAULT '0',
+  `time_muted` double DEFAULT 0,
   `allow_gifts` enum('0','1') DEFAULT '1',
-  `trading_locked` double DEFAULT '0',
+  `trading_locked` double DEFAULT 0,
   `friend_bar_state` enum('0','1') NOT NULL DEFAULT '1',
   `disable_forced_effects` enum('0','1') NOT NULL DEFAULT '0',
   `allow_mimic` enum('1','0') NOT NULL DEFAULT '1',
@@ -24601,11 +24596,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   KEY `home_room` (`home_room`),
   KEY `rank_vip` (`rank_vip`),
   KEY `messenger` (`id`,`username`,`look`,`motto`,`last_online`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table habbo.users: ~0 rows (approximately)
+-- Dumping data for table habbo.users: ~1 rows (approximately)
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` (`id`, `username`, `password`, `mail`, `auth_ticket`, `rank`, `rank_vip`, `credits`, `vip_points`, `activity_points`, `look`, `gender`, `motto`, `account_created`, `last_online`, `online`, `ip_last`, `ip_reg`, `home_room`, `is_muted`, `block_newfriends`, `hide_online`, `hide_inroom`, `vip`, `volume`, `last_change`, `machine_id`, `focus_preference`, `chat_preference`, `pets_muted`, `bots_muted`, `advertising_report_blocked`, `gotw_points`, `ignore_invites`, `time_muted`, `allow_gifts`, `trading_locked`, `friend_bar_state`, `disable_forced_effects`, `allow_mimic`) VALUES
+	(1, 'xSmoking', '59d1b0341a058fdc77f48b91388e4fa1', 'joaocovaes@gmail.com', 'ST-942055-050530491288175810561', 1, 1, 50000, 0, 5000, NULL, 'M', NULL, '1578712358', 1578712358, '0', '127.0.0.1', '127.0.0.1', 0, '0', '0', '0', '0', '1', '100,100,100', 0, '', '0', '0', '0', '0', '0', 0, '0', 0, '1', 0, '1', '0', '1');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 -- Dumping structure for table habbo.user_achievements
@@ -24628,7 +24625,7 @@ CREATE TABLE IF NOT EXISTS `user_badges` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `badge_id` varchar(100) NOT NULL,
-  `badge_slot` int(11) NOT NULL DEFAULT '0',
+  `badge_slot` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id, badge_id` (`user_id`,`badge_id`),
   KEY `user_id` (`user_id`) USING BTREE
@@ -24642,7 +24639,7 @@ DELETE FROM `user_badges`;
 -- Dumping structure for table habbo.user_clothing
 CREATE TABLE IF NOT EXISTS `user_clothing` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT 0,
   `part_id` varchar(25) NOT NULL,
   `part` varchar(45) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
@@ -24658,11 +24655,11 @@ DELETE FROM `user_clothing`;
 CREATE TABLE IF NOT EXISTS `user_effects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned DEFAULT NULL,
-  `effect_id` int(11) DEFAULT '1',
-  `total_duration` int(11) DEFAULT '3600',
+  `effect_id` int(11) DEFAULT 1,
+  `total_duration` int(11) DEFAULT 3600,
   `is_activated` enum('0','1') DEFAULT '0',
-  `activated_stamp` double DEFAULT '0',
-  `quantity` int(11) DEFAULT '0',
+  `activated_stamp` double DEFAULT 0,
+  `quantity` int(11) DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -24705,14 +24702,14 @@ DELETE FROM `user_ignores`;
 -- Dumping structure for table habbo.user_info
 CREATE TABLE IF NOT EXISTS `user_info` (
   `user_id` int(11) NOT NULL,
-  `bans` int(11) NOT NULL DEFAULT '0',
-  `cautions` int(11) NOT NULL DEFAULT '0',
-  `reg_timestamp` double NOT NULL DEFAULT '0',
-  `login_timestamp` double NOT NULL DEFAULT '0',
-  `cfhs` int(11) NOT NULL DEFAULT '0',
-  `cfhs_abusive` int(11) NOT NULL DEFAULT '0',
-  `trading_locked` double NOT NULL DEFAULT '0',
-  `trading_locks_count` int(11) NOT NULL DEFAULT '0',
+  `bans` int(11) NOT NULL DEFAULT 0,
+  `cautions` int(11) NOT NULL DEFAULT 0,
+  `reg_timestamp` double NOT NULL DEFAULT 0,
+  `login_timestamp` double NOT NULL DEFAULT 0,
+  `cfhs` int(11) NOT NULL DEFAULT 0,
+  `cfhs_abusive` int(11) NOT NULL DEFAULT 0,
+  `trading_locked` double NOT NULL DEFAULT 0,
+  `trading_locks_count` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -24741,7 +24738,7 @@ DELETE FROM `user_presents`;
 CREATE TABLE IF NOT EXISTS `user_quests` (
   `user_id` int(10) unsigned NOT NULL,
   `quest_id` int(10) unsigned NOT NULL,
-  `progress` int(10) DEFAULT '0',
+  `progress` int(10) DEFAULT 0,
   PRIMARY KEY (`user_id`,`quest_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -24790,7 +24787,7 @@ DELETE FROM `user_roomvisits`;
 -- Dumping structure for table habbo.user_saved_searches
 CREATE TABLE IF NOT EXISTS `user_saved_searches` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL DEFAULT '0',
+  `user_id` int(11) NOT NULL DEFAULT 0,
   `filter` varchar(65) NOT NULL DEFAULT '',
   `search_code` varchar(65) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
@@ -24806,34 +24803,36 @@ DELETE FROM `user_saved_searches`;
 -- Dumping structure for table habbo.user_stats
 CREATE TABLE IF NOT EXISTS `user_stats` (
   `id` int(7) NOT NULL,
-  `RoomVisits` int(7) NOT NULL DEFAULT '0',
-  `OnlineTime` int(7) NOT NULL DEFAULT '0',
-  `Respect` int(6) NOT NULL DEFAULT '0',
-  `RespectGiven` int(6) NOT NULL DEFAULT '0',
-  `GiftsGiven` int(6) NOT NULL DEFAULT '0',
-  `GiftsReceived` int(6) NOT NULL DEFAULT '0',
-  `DailyRespectPoints` int(1) NOT NULL DEFAULT '3',
-  `DailyPetRespectPoints` int(1) NOT NULL DEFAULT '3',
-  `AchievementScore` int(7) NOT NULL DEFAULT '0',
-  `quest_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `quest_progress` int(10) NOT NULL DEFAULT '0',
-  `lev_builder` int(10) NOT NULL DEFAULT '0',
-  `lev_social` int(10) NOT NULL DEFAULT '0',
-  `lev_identity` int(10) NOT NULL DEFAULT '0',
-  `lev_explore` int(10) NOT NULL DEFAULT '0',
-  `groupid` int(11) NOT NULL DEFAULT '0',
-  `tickets_answered` int(11) NOT NULL DEFAULT '0',
+  `RoomVisits` int(7) NOT NULL DEFAULT 0,
+  `OnlineTime` int(7) NOT NULL DEFAULT 0,
+  `Respect` int(6) NOT NULL DEFAULT 0,
+  `RespectGiven` int(6) NOT NULL DEFAULT 0,
+  `GiftsGiven` int(6) NOT NULL DEFAULT 0,
+  `GiftsReceived` int(6) NOT NULL DEFAULT 0,
+  `DailyRespectPoints` int(1) NOT NULL DEFAULT 3,
+  `DailyPetRespectPoints` int(1) NOT NULL DEFAULT 3,
+  `AchievementScore` int(7) NOT NULL DEFAULT 0,
+  `quest_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `quest_progress` int(10) NOT NULL DEFAULT 0,
+  `lev_builder` int(10) NOT NULL DEFAULT 0,
+  `lev_social` int(10) NOT NULL DEFAULT 0,
+  `lev_identity` int(10) NOT NULL DEFAULT 0,
+  `lev_explore` int(10) NOT NULL DEFAULT 0,
+  `groupid` int(11) NOT NULL DEFAULT 0,
+  `tickets_answered` int(11) NOT NULL DEFAULT 0,
   `respectsTimestamp` varchar(6) DEFAULT '10/19',
-  `forum_posts` int(11) NOT NULL DEFAULT '0',
+  `forum_posts` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `OnlineTime` (`OnlineTime`),
   KEY `Respect` (`Respect`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table habbo.user_stats: ~0 rows (approximately)
+-- Dumping data for table habbo.user_stats: ~1 rows (approximately)
 DELETE FROM `user_stats`;
 /*!40000 ALTER TABLE `user_stats` DISABLE KEYS */;
+INSERT INTO `user_stats` (`id`, `RoomVisits`, `OnlineTime`, `Respect`, `RespectGiven`, `GiftsGiven`, `GiftsReceived`, `DailyRespectPoints`, `DailyPetRespectPoints`, `AchievementScore`, `quest_id`, `quest_progress`, `lev_builder`, `lev_social`, `lev_identity`, `lev_explore`, `groupid`, `tickets_answered`, `respectsTimestamp`, `forum_posts`) VALUES
+	(1, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, '10/19', 0);
 /*!40000 ALTER TABLE `user_stats` ENABLE KEYS */;
 
 -- Dumping structure for table habbo.user_vouchers
