@@ -23,6 +23,8 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Threading;
+using HabboWS.HabboHotel;
+using HabboWS.Core.Language;
 
 namespace HabboWS
 {
@@ -32,7 +34,9 @@ namespace HabboWS
         public const string serverName = "Habbo WebSocket Server";
         public const string serverVersion = "0.0.1";
 
+        private static Game _game;
         private static ConfigurationData _configuration;
+        private static LanguageManager _languageManager;
         private static WebSocketServer _ws;
         private static DatabaseManager _manager;
 
@@ -77,7 +81,6 @@ namespace HabboWS
                     ConvertZeroDateTime = true,
                 };
 
-                Console.Write("Connecting to database... ");
                 _manager = new DatabaseManager(connectionString.ToString());
                 if (!_manager.IsConnected())
                 {
@@ -86,11 +89,23 @@ namespace HabboWS
                     Environment.Exit(1);
                     return;
                 }
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("success!");
-                Console.ForegroundColor = ConsoleColor.White;
+                log.Info("Connected to the database!");
 
-                Console.Write("Opening WebSocket... ");
+                using (IQueryAdapter dbClient = GetDatabaseManager().GetQueryReactor())
+                {
+                    dbClient.RunQuery("TRUNCATE `catalog_marketplace_data`");
+                    dbClient.RunQuery("UPDATE `rooms` SET `users_now` = '0' WHERE `users_now` > '0';");
+                    dbClient.RunQuery("UPDATE `users` SET `online` = '0' WHERE `online` = '1'");
+                    dbClient.RunQuery("UPDATE `server_status` SET `users_online` = '0', `loaded_rooms` = '0'");
+                }
+
+                //Get the configuration & Game set.
+                _languageManager = new LanguageManager();
+                _languageManager.Init();
+
+                _game = new Game();
+                
+
                 _ws = new WebSocketServer(int.Parse(GetConfig().data["ws.port"]), IPAddress.Any)
                 {
                     OnReceive = WebSocket.OnReceive,
@@ -99,17 +114,11 @@ namespace HabboWS
                     OnDisconnect = WebSocket.OnDisconnect,
                     TimeOut = new TimeSpan(0, 5, 0)
                 };
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("success!");
-                Console.ForegroundColor = ConsoleColor.White;
+                log.Info("WebSocket Open!");
 
-                Console.Write("Starting server... ");
                 _ws.Start();
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("success!");
-                Console.ForegroundColor = ConsoleColor.White;
+                log.Info("Server Started!");
 
-                Console.WriteLine("\nListening for connections...");
                 var command = string.Empty;
                 while (command != "exit")
                 {
@@ -202,9 +211,19 @@ namespace HabboWS
             return Allowedchars.Contains(character);
         }
 
+        public static Game GetGame()
+        {
+            return _game;
+        }
+
         public static ConfigurationData GetConfig()
         {
             return _configuration;
+        }
+
+        public static LanguageManager GetLanguageManager()
+        {
+            return _languageManager;
         }
 
         public static DatabaseManager GetDatabaseManager()

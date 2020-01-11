@@ -1,4 +1,6 @@
-﻿using log4net;
+﻿using HabboWS.HabboHotel.GameClients;
+using HabboWS.HabboHotel.Rooms;
+using log4net;
 using System.Collections.Generic;
 
 namespace HabboWS.HabboHotel.Users
@@ -43,6 +45,9 @@ namespace HabboWS.HabboHotel.Users
         private bool _allowConsoleMessages;
         private bool _allowGifts;
         private bool _allowMimic;
+
+        public List<RoomData> Rooms;
+        private GameClient _client;
 
         public Habbo(int Id, string Username, int Rank, string Motto, string Look, string Gender, int Credits, int ActivityPoints, int HomeRoom,
             bool HasFriendRequestsDisabled, int LastOnline, bool AppearOffline, bool HideInRoom, double CreateDate, int Diamonds,
@@ -92,6 +97,8 @@ namespace HabboWS.HabboHotel.Users
             this._allowGifts = AllowGifts;
             this._allowMimic = AllowMimic;
             this._vipRank = VIPRank;
+
+            this.Rooms = new List<RoomData>();
         }
 
         public int Id
@@ -283,6 +290,14 @@ namespace HabboWS.HabboHotel.Users
         {
             get { return this._allowMimic; }
             set { this._allowMimic = value; }
+        }
+
+        public void Dispose()
+        {
+            if(this.Rooms != null)
+            {
+                this.Rooms.Clear();
+            }
         }
     }
 }

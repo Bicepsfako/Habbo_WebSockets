@@ -81,6 +81,7 @@
     <Compile Include="Communication\WebSocket.cs" />
     <Compile Include="Core\ConfigurationData.cs" />
     <Compile Include="Core\ExceptionLogger.cs" />
+    <Compile Include="Core\Language\LanguageManager.cs" />
     <Compile Include="Database\Adapter\NormalQueryReactor.cs" />
     <Compile Include="Database\Adapter\QueryAdapter.cs" />
     <Compile Include="Database\DatabaseConnection.cs" />
@@ -89,6 +90,14 @@
     <Compile Include="Database\Interfaces\IQueryAdapter.cs" />
     <Compile Include="Database\Interfaces\IRegularQueryAdapter.cs" />
     <Compile Include="HabboEnvironment.cs" />
+    <Compile Include="HabboHotel\Game.cs" />
+    <Compile Include="HabboHotel\GameClients\GameClient.cs" />
+    <Compile Include="HabboHotel\Rooms\RoomStateUtility.cs" />
+    <Compile Include="HabboHotel\Rooms\RoomManager.cs" />
+    <Compile Include="HabboHotel\Rooms\Room.cs" />
+    <Compile Include="HabboHotel\Rooms\RoomModel.cs" />
+    <Compile Include="HabboHotel\Rooms\RoomState.cs" />
+    <Compile Include="HabboHotel\Rooms\RoomData.cs" />
     <Compile Include="HabboHotel\Users\Authenticator\HabboFactory.cs" />
     <Compile Include="HabboHotel\Users\Habbo.cs" />
     <Compile Include="HabboHotel\Users\UserData\UserData.cs" />

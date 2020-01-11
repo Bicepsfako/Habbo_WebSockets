@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>NDC-Pixels</title>
+    <title>Habbo WebSocket</title>
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"/>
     <link href="web-gallery/css/reset.css" rel="stylesheet"/>
     <link href="web-gallery/css/global.css" rel="stylesheet"/>

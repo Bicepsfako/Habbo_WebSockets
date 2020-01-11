@@ -8,7 +8,7 @@ namespace HabboWS.Communication
 {
     public class WebSocket
     {
-        private static readonly ILog log = LogManager.GetLogger("HabboWS.Communication.RCON.RCONConnection");
+        private static readonly ILog log = LogManager.GetLogger("HabboWS.Communication");
 
         public static void OnConnect(UserContext context)
         {
@@ -33,17 +33,17 @@ namespace HabboWS.Communication
                         UserData data = UserDataFactory.GetUserData(int.Parse(package[1]));
                         if (data != null)
                         {
-                            Habbo Generated = data.user;
-                            if (Generated != null)
+                            Habbo user = data.user;
+                            if (user != null)
                             {
-                                HabboEnvironment.AddToOnline(int.Parse(package[1]), Generated);
+                                HabboEnvironment.AddToOnline(int.Parse(package[1]), user);
                                 HabboEnvironment.UpdateConsoleTitle();
                             }
                         }
                         break;
                     case "disconnect":
-                        Habbo Data = null;
-                        HabboEnvironment.RemoveFromOnline(int.Parse(package[1]), out Data);
+                        Habbo outUser = null;
+                        HabboEnvironment.RemoveFromOnline(int.Parse(package[1]), out outUser);
                         HabboEnvironment.UpdateConsoleTitle();
                         break;
                     default:
