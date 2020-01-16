@@ -42,7 +42,7 @@ namespace HabboWS
             var e = (Exception)args.ExceptionObject;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("SYSTEM CRITICAL EXCEPTION: " + e);
-            HabboEnvironment.PerformShutDown();
+            HabboEnvironment.PerformShutDown(sender, args);
         }
 
         private enum CtrlType

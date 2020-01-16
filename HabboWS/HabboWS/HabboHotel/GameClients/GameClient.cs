@@ -1,10 +1,13 @@
 ﻿using Alchemy.Classes;
 using HabboWS.HabboHotel.Users;
+using log4net;
 
 namespace HabboWS.HabboHotel.GameClients
 {
     public class GameClient
     {
+        private static readonly ILog log = LogManager.GetLogger("Wandala.HabboHotel.GameClients.GameClient");
+
         private readonly int _id;
         private Habbo _habbo;
         private UserContext _userContext;
@@ -16,9 +19,9 @@ namespace HabboWS.HabboHotel.GameClients
             this._userContext = UserContext;
         }
 
-        public void SendNotification(string Message)
+        public void SendPacket(string Message)
         {
-
+            _userContext.Send(Message);
         }
 
         public UserContext GetUserContext()

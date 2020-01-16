@@ -142,13 +142,13 @@ namespace HabboWS.HabboHotel.Rooms
         {
             if (!_roomModels.ContainsKey(Model))
             {
-                Session.SendNotification(HabboEnvironment.GetLanguageManager().TryGetValue("room.creation.model.not_found"));
+                Session.SendPacket(HabboEnvironment.GetLanguageManager().TryGetValue("room.creation.model.not_found"));
                 return null;
             }
 
             if (Name.Length < 3)
             {
-                Session.SendNotification(HabboEnvironment.GetLanguageManager().TryGetValue("room.creation.name.too_short"));
+                Session.SendPacket(HabboEnvironment.GetLanguageManager().TryGetValue("room.creation.name.too_short"));
                 return null;
             }
 

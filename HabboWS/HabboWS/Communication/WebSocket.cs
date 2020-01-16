@@ -37,6 +37,7 @@ namespace HabboWS.Communication
                             if (user != null)
                             {
                                 HabboEnvironment.AddToOnline(int.Parse(package[1]), user);
+                                HabboEnvironment.GetGame().GetGameClientManager().CreateClient(int.Parse(package[1]), context);
                                 HabboEnvironment.UpdateConsoleTitle();
                             }
                         }
@@ -44,7 +45,11 @@ namespace HabboWS.Communication
                     case "disconnect":
                         Habbo outUser = null;
                         HabboEnvironment.RemoveFromOnline(int.Parse(package[1]), out outUser);
+                        HabboEnvironment.GetGame().GetGameClientManager().DisposeClient(int.Parse(package[1]));
                         HabboEnvironment.UpdateConsoleTitle();
+                        break;
+                    case "rooms":
+
                         break;
                     default:
                         break;

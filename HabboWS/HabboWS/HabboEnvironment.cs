@@ -104,7 +104,6 @@ namespace HabboWS
                 _languageManager.Init();
 
                 _game = new Game();
-                
 
                 _ws = new WebSocketServer(int.Parse(GetConfig().data["ws.port"]), IPAddress.Any)
                 {
@@ -126,6 +125,8 @@ namespace HabboWS
                 }
 
                 _ws.Stop();
+
+                AppDomain.CurrentDomain.ProcessExit += new EventHandler(PerformShutDown);
             }
             catch (KeyNotFoundException e)
             {
@@ -156,11 +157,11 @@ namespace HabboWS
             }
         }
 
-        public static void PerformShutDown()
+        public static void PerformShutDown(object sender, EventArgs args)
         {
             Console.Clear();
             Console.WriteLine("Server shutting down...");
-            Console.Title = "Wandala Server - SHUTTING DOWN!";
+            Console.Title = serverName + " - SHUTTING DOWN!";
 
             log.Info(serverName + " has successfully shutdown.");
 

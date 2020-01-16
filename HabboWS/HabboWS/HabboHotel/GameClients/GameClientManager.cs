@@ -1,14 +1,10 @@
-﻿using log4net;
-using System;
+﻿using Alchemy.Classes;
+using log4net;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HabboWS.HabboHotel.GameClients
 {
-    class GameClientManager
+    public class GameClientManager
     {
         private static readonly ILog log = LogManager.GetLogger("Wandala.HabboHotel.GameClients.GameClientManager");
 
@@ -33,6 +29,25 @@ namespace HabboWS.HabboHotel.GameClients
             if (_clientsByUsername.ContainsKey(username.ToLower()))
                 return _clientsByUsername[username.ToLower()];
             return null;
+        }
+
+        public void CreateClient(int UserId, UserContext UserContext)
+        {
+            GameClient client = new GameClient(UserId, UserContext);
+            _clientsById.TryAdd(UserId, client);
+            _clientsByUsername.TryAdd(client.GetHabbo().Username, client);
+        }
+
+        public void DisposeClient(int UserId)
+        {
+            GameClient client = null;
+            _clientsById.TryRemove(UserId, out client);
+            _clientsByUsername.TryRemove(client.GetHabbo().Username, out client);
+        }
+
+        public void Dispose()
+        {
+
         }
     }
 }
